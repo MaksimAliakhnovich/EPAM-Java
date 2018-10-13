@@ -1,6 +1,4 @@
-package edu.epam.selctioncomittee.entity;
-
-import java.util.List;
+package main.java.edu.epam.selctioncomittee.entity;
 
 /**
  * Created by mascon on 11.10.2018.

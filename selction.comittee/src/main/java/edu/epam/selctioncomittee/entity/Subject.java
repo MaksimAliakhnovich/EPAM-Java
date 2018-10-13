@@ -1,4 +1,4 @@
-package edu.epam.selctioncomittee.entity;
+package main.java.edu.epam.selctioncomittee.entity;
 
 /**
  * Created by mascon on 11.10.2018.
@@ -6,12 +6,10 @@ package edu.epam.selctioncomittee.entity;
 public class Subject {
     private Long id;
     private String name;
-    private Long facultyId;
 
-    public Subject(Long id, String name, Long facultyId) {
+    public Subject(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.facultyId = facultyId;
     }
 
     public Long getId() {
@@ -28,13 +26,5 @@ public class Subject {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getFacultyId() {
-        return facultyId;
-    }
-
-    public void setFacultyId(Long facultyId) {
-        this.facultyId = facultyId;
     }
 }

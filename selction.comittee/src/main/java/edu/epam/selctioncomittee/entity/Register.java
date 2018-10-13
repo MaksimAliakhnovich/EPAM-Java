@@ -1,19 +1,21 @@
-package edu.epam.selctioncomittee.entity;
+package main.java.edu.epam.selctioncomittee.entity;
 
 /**
  * Created by mascon on 11.10.2018.
  */
-public class Registr {
+public class Register {
     private Long id;
     private Long enrolleeId;
     private Long subjectId;
     private Integer score;
+    private Long facultyId;
 
-    public Registr(Long id, Long enrolleeId, Long subjectId, Integer score) {
+    public Register(Long id, Long enrolleeId, Long subjectId, Integer score, Long facultyId) {
         this.id = id;
         this.enrolleeId = enrolleeId;
         this.subjectId = subjectId;
         this.score = score;
+        this.facultyId = facultyId;
     }
 
     public Long getId() {
@@ -46,5 +48,13 @@ public class Registr {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public Long getFacultyId() {
+        return facultyId;
+    }
+
+    public void setFacultyId(Long facultyId) {
+        this.facultyId = facultyId;
     }
 }

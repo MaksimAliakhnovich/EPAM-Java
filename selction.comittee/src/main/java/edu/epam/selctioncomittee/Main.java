@@ -1,35 +1,30 @@
-package edu.epam.selctioncomittee;
+package main.java.edu.epam.selctioncomittee;
 
+import main.java.edu.epam.selctioncomittee.connection.factories.ConnectionFactory;
+import main.java.edu.epam.selctioncomittee.connection.factories.MySqlConnectionFactory;
+import main.java.edu.epam.selctioncomittee.connection.factories.SqliteConnectionFactory;
+import main.java.edu.epam.selctioncomittee.service.LogicService;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 public class Main {
-
-    private static Connection connection = null;
-    private static String username = "root";
-    private static String password = "root";
-//    private static String url = "jdbc:sqlite:D:\\Git\\EPAM-Java\\selection.committee\\src\\main\\resources\\university.s3db";
-    private static String url = "jdbc:mysql://localhost:3306/university?useSSL=false&serverTimezone=UTC";
-
-
     public static void main(String[] args) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        Properties props = new Properties();
+        try (FileInputStream in = new FileInputStream("resources/application.properties")) {
+            props.load(in);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //соединяемся
-        if (connection != null) {
-            System.out.println("Соединение успешно выполнено");
-        } else {
-            System.out.println("Соединение не установлено");
-            System.exit(0);
-        }
+        String databaseType = props.getProperty("DB_TYPE");
+        ConnectionFactory connectionFactory = getConnectionFactory(databaseType);
+        LogicService logicService = new LogicService(connectionFactory);
+        logicService.start();
 
         //Создает объект себе для отправки запросов SQL к базе данных
+        Connection connection = connectionFactory.getConnection().getConnection();
         Statement st = null;
         try {
             st = connection.createStatement();
@@ -40,7 +35,7 @@ public class Main {
         //Получаем результирующую таблицу
         ResultSet rs = null;
         try {
-            rs = st.executeQuery("SELECT * FROM faculty WHERE faculty_id = 1;");
+            rs = st.executeQuery("SELECT * FROM faculty WHERE id = 1;");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,5 +74,13 @@ public class Main {
         }
     }
 
+    private static ConnectionFactory getConnectionFactory(String databaseType) {
+        switch (databaseType) {
+            case "mysql":
+                return new MySqlConnectionFactory();
+            default:
+                return new SqliteConnectionFactory();
+        }
+    }
 }
 

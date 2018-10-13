@@ -1,7 +1,7 @@
-package edu.epam.selctioncomittee.dao.impl;
+package main.java.edu.epam.selctioncomittee.dao.impl;
 
-import edu.epam.selctioncomittee.dao.EnrolleeDAO;
-import edu.epam.selctioncomittee.entity.Enrollee;
+import main.java.edu.epam.selctioncomittee.dao.EnrolleeDAO;
+import main.java.edu.epam.selctioncomittee.entity.Enrollee;
 
 import java.util.List;
 

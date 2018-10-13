@@ -1,7 +1,6 @@
-package edu.epam.selctioncomittee.dao;
+package main.java.edu.epam.selctioncomittee.dao;
 
-import edu.epam.selctioncomittee.entity.Faculty;
-import edu.epam.selctioncomittee.entity.Subject;
+import main.java.edu.epam.selctioncomittee.entity.Faculty;
 
 import java.util.List;
 

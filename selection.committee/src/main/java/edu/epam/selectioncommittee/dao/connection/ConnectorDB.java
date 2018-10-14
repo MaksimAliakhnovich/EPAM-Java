@@ -1,25 +1,18 @@
-package main.java.edu.epam.selctioncomittee.connection;
+package main.java.edu.epam.selectioncommittee.dao.connection;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import main.java.edu.epam.selectioncommittee.utils.ReadProperties;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
- * Created by mascon on 12.10.2018.
+ * Created by mascon on 13.10.2018.
  */
-public class MySqlConnection implements CreateConnection {
-    @Override
-    public Connection getConnection() {
-        Properties props = new Properties();
-        try (FileInputStream in = new FileInputStream("resources/application.properties")) {
-            props.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String driver = props.getProperty("DB_DRIVER_CLASS");
+class ConnectorDB {
+    static Connection getConnection() {
+        ReadProperties props = new ReadProperties();
+        String driver = props.getAllProperties().getProperty("DB_DRIVER_CLASS");
         if (driver != null) {
             try {
                 Class.forName(driver);
@@ -28,9 +21,9 @@ public class MySqlConnection implements CreateConnection {
             }
         }
 
-        String url = props.getProperty("DB_URL");
-        String username = props.getProperty("DB_USERNAME");
-        String password = props.getProperty("DB_PASSWORD");
+        String url = props.getAllProperties().getProperty("DB_URL");
+        String username = props.getAllProperties().getProperty("DB_USERNAME");
+        String password = props.getAllProperties().getProperty("DB_PASSWORD");
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, username, password);

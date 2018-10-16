@@ -1,10 +1,10 @@
-package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
+package main.java.edu.epam.selectioncommittee.dao.sqliteimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.RegisterDAO;
 import main.java.edu.epam.selectioncommittee.entity.Register;
-import main.java.edu.epam.selectioncommittee.utils.Student;
 import main.java.edu.epam.selectioncommittee.service.ConnectionService;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
+import main.java.edu.epam.selectioncommittee.utils.Student;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

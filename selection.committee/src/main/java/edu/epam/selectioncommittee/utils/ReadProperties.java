@@ -10,9 +10,9 @@ import java.util.Properties;
 public class ReadProperties {
     public Properties getAllProperties() {
         Properties props = new Properties();
-        try (FileInputStream in = new FileInputStream("main/resources/application.properties")) {
-//        try (FileInputStream in = new FileInputStream("D:\\Git\\EPAM-Java\\selection.committee\\" +
-//                "src\\main\\resources\\application.properties")) {
+//        try (FileInputStream in = new FileInputStream("main/resources/application.properties")) {
+        try (FileInputStream in = new FileInputStream("D:\\Git\\EPAM-Java\\selection.committee\\" +
+                "src\\main\\resources\\application.properties")) {
             props.load(in);
         } catch (IOException e) {
             e.printStackTrace();

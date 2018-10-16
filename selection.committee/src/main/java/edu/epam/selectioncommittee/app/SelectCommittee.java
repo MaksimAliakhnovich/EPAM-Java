@@ -1,5 +1,8 @@
 package main.java.edu.epam.selectioncommittee.app;
 
+import main.java.edu.epam.selectioncommittee.dao.connection.factories.DAOFactory;
+import main.java.edu.epam.selectioncommittee.dao.connection.factories.MySqlDAOFactory;
+import main.java.edu.epam.selectioncommittee.dao.connection.factories.SqliteDAOFactory;
 import main.java.edu.epam.selectioncommittee.service.ConnectionService;
 import main.java.edu.epam.selectioncommittee.service.LogicService;
 import main.java.edu.epam.selectioncommittee.utils.ReadProperties;
@@ -8,18 +11,40 @@ import main.java.edu.epam.selectioncommittee.utils.ReadProperties;
  * Created by mascon on 13.10.2018.
  */
 public class SelectCommittee {
-    public void start() {
+    private static LogicService configureLogicService() {
+        LogicService logicService;
+        DAOFactory daoFactory;
         ReadProperties props = new ReadProperties();
         String databaseType = props.getAllProperties().getProperty("DB_TYPE");
         ConnectionService.getInstance().setDatabaseType(databaseType);
 
-        LogicService logicService = new LogicService();
-        logicService.print(logicService.getAllFac());
-        logicService.print(logicService.getAllSubNameCurFac(1L));
+        if (databaseType.equals("mysql")) {
+            daoFactory = new MySqlDAOFactory();
+            logicService = new LogicService(daoFactory);
+        } else {
+            daoFactory = new SqliteDAOFactory();
+            logicService = new LogicService(daoFactory);
+        }
+        return logicService;
+    }
 
-        logicService.addEnrollee("Сергей", "Сергеевич", 90);
-        logicService.getSubScore(1L,20,30,40);
+    public void start() {
+        LogicService logicService = configureLogicService();
+        logicService.print(logicService.getAllFac());
+        logicService.print(logicService.getAllSubNameByFacId(1L));
+
+        logicService.addEnrollee("Максим", "Олегович", 10, "HB0000001");
+        logicService.getSubScore(1L,10,20,30);
         logicService.addRegLine();
+
+        logicService.addEnrollee("Сергей", "Сергеевич", 20, "HB0000002");
+        logicService.getSubScore(1L,40,50,60);
+        logicService.addRegLine();
+
+        logicService.addEnrollee("Кирилл", "Денисович", 30, "HB0000003");
+        logicService.getSubScore(1L,70,80,90);
+        logicService.addRegLine();
+
         logicService.print(logicService.getStudentByFacId(1L));
     }
 }

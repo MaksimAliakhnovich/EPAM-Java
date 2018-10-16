@@ -1,4 +1,4 @@
-package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
+package main.java.edu.epam.selectioncommittee.dao.sqliteimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.EnrolleeDAO;
 import main.java.edu.epam.selectioncommittee.entity.Enrollee;

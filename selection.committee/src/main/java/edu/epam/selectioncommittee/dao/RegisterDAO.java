@@ -1,6 +1,7 @@
 package main.java.edu.epam.selectioncommittee.dao;
 
 import main.java.edu.epam.selectioncommittee.entity.Register;
+import main.java.edu.epam.selectioncommittee.utils.Student;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ public interface RegisterDAO {
                Long subject_id_2, int subject_score_2,
                Long subject_id_3, int subject_score_3,
                Long faculty_id);
-    List<Register> getByEnrolleeId(Long id);
+    List<Student> getStudentByFacultyId(Long faculty_id);
 }

@@ -5,6 +5,6 @@ import java.sql.Connection;
 /**
  * Created by mascon on 12.10.2018.
  */
-public interface CreateConnection {
+public interface CustomConnection {
     Connection getConnection();
 }

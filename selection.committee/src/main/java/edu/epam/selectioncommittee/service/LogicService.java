@@ -6,6 +6,7 @@ import main.java.edu.epam.selectioncommittee.dao.mysqlimpl.FacultySubjectDAOImpl
 import main.java.edu.epam.selectioncommittee.dao.mysqlimpl.RegisterDAOImpl;
 import main.java.edu.epam.selectioncommittee.entity.Faculty;
 import main.java.edu.epam.selectioncommittee.entity.FacultySubject;
+import main.java.edu.epam.selectioncommittee.utils.Student;
 
 import java.util.List;
 
@@ -14,12 +15,11 @@ import java.util.List;
  */
 public class LogicService {
 
-    private Long facultyId = 0L;
+    private Long enrolleeId = 0L;
     private int subScore1 = 0;
     private int subScore2 = 0;
     private int subScore3 = 0;
-    private Long enrolleeId = 0L;
-
+    private Long facultyId = 0L;
 
     // получение всех факультетов
     public List<Faculty> getAllFac() {
@@ -28,16 +28,16 @@ public class LogicService {
     }
 
     // получение предметов по выбранному факультету
-    public List<FacultySubject> getAllSubCurFac(Long id) {
+    public List<FacultySubject> getAllSubNameCurFac(Long id) {
         FacultySubjectDAOImpl facSubDAO = new FacultySubjectDAOImpl();
-        return facSubDAO.getAllSubjectsByFacultyId(id);
+        return facSubDAO.getAllSubjectsNameByFacultyId(id);
     }
 
     // добавление абитуриента с аттестатом
-    public void addEnrollee(String firstName, String lastName, int certificateScore){
+    public void addEnrollee(String firstName, String lastName, int certificateScore, String passport) {
         EnrolleeDAOImpl enrolleeDAO = new EnrolleeDAOImpl();
-        System.out.println(enrolleeDAO.add(firstName, lastName, certificateScore));
-        enrolleeId = enrolleeDAO.getByFNameAndLNameAndScore(firstName, lastName, certificateScore);
+        System.out.println(enrolleeDAO.add(firstName, lastName, certificateScore, passport));
+        enrolleeId = enrolleeDAO.getByPassport(passport);
     }
 
     // сбор баллов по предметам факультета
@@ -51,13 +51,25 @@ public class LogicService {
     // добавление записи в регистр
     public void addRegLine() {
         RegisterDAOImpl regDAO = new RegisterDAOImpl();
-        FacultySubjectDAOImpl facSubDAO = new FacultySubjectDAOImpl();
+        List<Long> subsId = new FacultySubjectDAOImpl().getAllSubjectsIdByFacultyId(facultyId);
+        /*сделать 3 раза добавление строки*/
         System.out.println(regDAO.add(
                 enrolleeId,
-                1L, subScore1,
-                2L, subScore2,
-                3L, subScore3,
+                subsId.get(0), subScore1,
+                subsId.get(1), subScore2,
+                subsId.get(2), subScore3,
                 facultyId));
+        enrolleeId = 0L;
+        subScore1 = 0;
+        subScore2 = 0;
+        subScore3 = 0;
+        facultyId = 0L;
+    }
+
+    // подсчёт зачисленных на факультеты
+    public List<Student> getStudentByFacId(Long id) {
+        RegisterDAOImpl regDAO = new RegisterDAOImpl();
+        return regDAO.getStudentByFacultyId(id);
     }
 
     // построчный вывод коллекции в консоль
@@ -67,15 +79,3 @@ public class LogicService {
         }
     }
 }
-
-    /*List<Register> registers = registerDAO.getAll();
-        for (Register register : registers) {
-                System.out.println(register.toString());*/
-
-    /*        EnrolleeDAOImpl enrolleeDAO = new EnrolleeDAOImpl();
-        List<Enrollee> list = enrolleeDAO.getAll();
-        for (Enrollee enrollee : list) {
-            System.out.println(enrollee.toString());
-        }
-        System.out.println(enrolleeDAO.getById(3L).toString());
-*/

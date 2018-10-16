@@ -1,6 +1,6 @@
 package main.java.edu.epam.selectioncommittee.dao.connection.factories;
 
-import main.java.edu.epam.selectioncommittee.dao.connection.CreateConnection;
+import main.java.edu.epam.selectioncommittee.dao.connection.CustomConnection;
 import main.java.edu.epam.selectioncommittee.dao.connection.SqliteConnection;
 
 /**
@@ -8,7 +8,7 @@ import main.java.edu.epam.selectioncommittee.dao.connection.SqliteConnection;
  */
 public class SqliteConnectionFactory implements ConnectionFactory {
     @Override
-    public CreateConnection getConnection() {
+    public CustomConnection getConnection() {
         return new SqliteConnection();
     }
 }

@@ -5,7 +5,10 @@ import main.java.edu.epam.selectioncommittee.entity.Enrollee;
 import main.java.edu.epam.selectioncommittee.service.ConnectionService;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,93 +16,92 @@ import java.util.List;
  * Created by mascon on 11.10.2018.
  */
 public class EnrolleeDAOImpl implements EnrolleeDAO {
-    private PreparedStatement ps = null;
-    private ResultSet rs = null;
-    private Connection cn = null;
+    private final static String SQL_GET_ALL = "SELECT id, first_name, last_name, certificate_score FROM enrollee;";
+    private final static String SQL_GET_BY_ID = "SELECT id, first_name, last_name, certificate_score FROM enrollee WHERE id = ?;";
+    private final static String SQL_ADD = "INSERT INTO enrollee (first_name, last_name, certificate_score) VALUES (?, ?, ?, ?);";
+    private final static String SQL_GET_BY_PASSPORT = "SELECT id FROM enrollee WHERE passport = ?;";
+    private PreparedStatement prepStat = null;
+    private ResultSet resSet = null;
+    private Connection conn = null;
+
 
     @Override
     public List<Enrollee> getAll() {
-        final String SQL = "SELECT id, first_name, last_name, certificate_score FROM enrollee;";
         List<Enrollee> list = new ArrayList<>();
-
         try {
-            cn = ConnectionService.getInstance().getConnection();
-            ps = cn.prepareStatement(SQL);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Long id = rs.getLong("id");
-                String first_name = rs.getString("first_name");
-                String last_name = rs.getString("last_name");
-                int certificate_score = rs.getInt("certificate_score");
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_GET_ALL);
+            resSet = prepStat.executeQuery();
+            while (resSet.next()) {
+                Long id = resSet.getLong("id");
+                String first_name = resSet.getString("first_name");
+                String last_name = resSet.getString("last_name");
+                int certificate_score = resSet.getInt("certificate_score");
                 list.add(new Enrollee(id, first_name, last_name, certificate_score));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(rs, ps, cn);
+            CloseConnection.closeConnection(resSet, prepStat, conn);
         }
         return list;
     }
 
     @Override
     public Enrollee getById(Long reqId) {
-        final String SQL = "SELECT id, first_name, last_name, certificate_score FROM enrollee WHERE id = ?;";
         Enrollee enrollee = null;
         try {
-            cn = ConnectionService.getInstance().getConnection();
-            ps = cn.prepareStatement(SQL);
-            ps.setLong(1, reqId);
-            rs = ps.executeQuery();
-            rs.next();
-            Long id = rs.getLong("id");
-            String first_name = rs.getString("first_name");
-            String last_name = rs.getString("last_name");
-            int certificate_score = rs.getInt("certificate_score");
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_GET_BY_ID);
+            prepStat.setLong(1, reqId);
+            resSet = prepStat.executeQuery();
+            resSet.next();
+            Long id = resSet.getLong("id");
+            String first_name = resSet.getString("first_name");
+            String last_name = resSet.getString("last_name");
+            int certificate_score = resSet.getInt("certificate_score");
             enrollee = new Enrollee(id, first_name, last_name, certificate_score);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(rs, ps, cn);
+            CloseConnection.closeConnection(resSet, prepStat, conn);
         }
         return enrollee;
     }
 
     @Override
-    public String add(String firstName, String lastName, int score) {
-        final String SQL = "INSERT INTO enrollee (first_name, last_name, certificate_score) VALUES (?, ?, ?);";
+    public String add(String firstName, String lastName, int score, String passport) {
         int count = 0;
         try {
-            cn = ConnectionService.getInstance().getConnection();
-            ps = cn.prepareStatement(SQL);
-            ps.setString(1, firstName);
-            ps.setString(2, lastName);
-            ps.setInt(3, score);
-            count = ps.executeUpdate();
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_ADD);
+            prepStat.setString(1, firstName);
+            prepStat.setString(2, lastName);
+            prepStat.setInt(3, score);
+            prepStat.setString(4, passport);
+            count = prepStat.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(rs, ps, cn);
+            CloseConnection.closeConnection(resSet, prepStat, conn);
         }
         return count + " row(s) added successfully.";
     }
 
     @Override
-    public Long getByFNameAndLNameAndScore(String firstName, String lastName, int score) {
-        final String SQL = "SELECT id FROM enrollee WHERE first_name = ? AND last_name = ? AND certificate_score = ?;";
+    public Long getByPassport(String passport) {
         Long id = 0L;
         try {
-            cn = ConnectionService.getInstance().getConnection();
-            ps = cn.prepareStatement(SQL);
-            ps.setString(1, firstName);
-            ps.setString(2, lastName);
-            ps.setInt(3, score);
-            rs = ps.executeQuery();
-            rs.next();
-            id = rs.getLong("id");
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_GET_BY_PASSPORT);
+            prepStat.setString(1, passport);
+            resSet = prepStat.executeQuery();
+            resSet.next();
+            id = resSet.getLong("id");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(rs, ps, cn);
+            CloseConnection.closeConnection(resSet, prepStat, conn);
         }
         return id;
     }

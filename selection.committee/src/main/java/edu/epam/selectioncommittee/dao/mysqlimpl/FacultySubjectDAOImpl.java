@@ -16,31 +16,54 @@ import java.util.List;
  * Created by mascon on 14.10.2018.
  */
 public class FacultySubjectDAOImpl implements FacultySubjectDAO {
-    private PreparedStatement ps = null;
-    private ResultSet rs = null;
-    private Connection cn = null;
+    private final static String SQL_GET_ALL_SUB_ID_BY_FAC_ID = "SELECT faculty_subject.id FROM faculty_subject " +
+            "LEFT JOIN faculty ON faculty.id = faculty_subject.faculty_id " +
+            "WHERE faculty_id = ?;";
+    private final static String SQL_GET_ALL_SUB_NAME_BY_FAC_ID = "SELECT subject_num, subject.name FROM faculty_subject " +
+            "LEFT JOIN faculty ON faculty.id = faculty_subject.faculty_id " +
+            "LEFT JOIN subject ON subject.id = faculty_subject.subject_id " +
+            "WHERE faculty_id = ?;";
+    private PreparedStatement prepStat = null;
+    private ResultSet resSet = null;
+    private Connection conn = null;
 
     @Override
-    public List<FacultySubject> getAllSubjectsByFacultyId(Long facultyId) {
-        final String SQL = "SELECT subject.name FROM faculty_subject " +
-                "LEFT JOIN faculty ON faculty.id = faculty_subject.faculty_id " +
-                "LEFT JOIN subject ON subject.id = faculty_subject.subject_id " +
-                "WHERE faculty_id = ?";
-        List<FacultySubject> list = new ArrayList<>();
-
+    public List<Long> getAllSubjectsIdByFacultyId(Long facultyId) {
+        List<Long> list = new ArrayList<>();
         try {
-            cn = ConnectionService.getInstance().getConnection();
-            ps = cn.prepareStatement(SQL);
-            ps.setLong(1, facultyId);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                String sName = rs.getString("subject.name");
-                list.add(new FacultySubject(sName));
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_GET_ALL_SUB_ID_BY_FAC_ID);
+            prepStat.setLong(1, facultyId);
+            resSet = prepStat.executeQuery();
+            while (resSet.next()) {
+                Long id = resSet.getLong("faculty_subject.id");
+                list.add(id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(rs, ps, cn);
+            CloseConnection.closeConnection(resSet, prepStat, conn);
+        }
+        return list;
+    }
+
+    @Override
+    public List<FacultySubject> getAllSubjectsNameByFacultyId(Long facultyId) {
+        List<FacultySubject> list = new ArrayList<>();
+        try {
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_GET_ALL_SUB_NAME_BY_FAC_ID);
+            prepStat.setLong(1, facultyId);
+            resSet = prepStat.executeQuery();
+            while (resSet.next()) {
+                int sNum = resSet.getInt("subject_num");
+                String sName = resSet.getString("subject.name");
+                list.add(new FacultySubject(sNum, sName));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseConnection.closeConnection(resSet, prepStat, conn);
         }
         return list;
     }

@@ -16,40 +16,29 @@ import java.util.List;
  * Created by mascon on 14.10.2018.
  */
 public class FacultyDAOImpl implements FacultyDAO {
-    private PreparedStatement ps = null;
-    private ResultSet rs = null;
-    private Connection cn = null;
+    private final static String SQL_GET_ALL = "SELECT id, name, recruitment_plan FROM faculty;";
+    private PreparedStatement prepStat = null;
+    private ResultSet resSet = null;
+    private Connection conn = null;
 
     @Override
     public List<Faculty> getAll() {
-        final String SQL = "SELECT id, name, recruitment_plan FROM faculty;";
         List<Faculty> list = new ArrayList<>();
-
         try {
-            cn = ConnectionService.getInstance().getConnection();
-            ps = cn.prepareStatement(SQL);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Long id = rs.getLong("id");
-                String name = rs.getString("name");
-                int recruitment_plan = rs.getInt("recruitment_plan");
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_GET_ALL);
+            resSet = prepStat.executeQuery();
+            while (resSet.next()) {
+                Long id = resSet.getLong("id");
+                String name = resSet.getString("name");
+                int recruitment_plan = resSet.getInt("recruitment_plan");
                 list.add(new Faculty(id, name, recruitment_plan));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(rs, ps, cn);
+            CloseConnection.closeConnection(resSet, prepStat, conn);
         }
         return list;
-    }
-
-    @Override
-    public Faculty getById(Long id) {
-        return null;
-    }
-
-    @Override
-    public Faculty create(Faculty faculty) {
-        return null;
     }
 }

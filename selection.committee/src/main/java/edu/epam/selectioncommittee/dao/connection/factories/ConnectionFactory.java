@@ -1,10 +1,10 @@
 package main.java.edu.epam.selectioncommittee.dao.connection.factories;
 
-import main.java.edu.epam.selectioncommittee.dao.connection.CreateConnection;
+import main.java.edu.epam.selectioncommittee.dao.connection.CustomConnection;
 
 /**
  * Created by mascon on 12.10.2018.
  */
 public interface ConnectionFactory {
-    CreateConnection getConnection();
+    CustomConnection getConnection();
 }

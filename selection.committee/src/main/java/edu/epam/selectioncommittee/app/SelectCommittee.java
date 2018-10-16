@@ -15,11 +15,12 @@ public class SelectCommittee {
 
         LogicService logicService = new LogicService();
         logicService.print(logicService.getAllFac());
-        logicService.print(logicService.getAllSubCurFac(1L));
+        logicService.print(logicService.getAllSubNameCurFac(1L));
 
-        logicService.addEnrollee("Максим", "Алехнович", 100);
-        logicService.getSubScore(1L,10,20,30);
-//        logicService.addRegLine();
+        logicService.addEnrollee("Сергей", "Сергеевич", 90);
+        logicService.getSubScore(1L,20,30,40);
+        logicService.addRegLine();
+        logicService.print(logicService.getStudentByFacId(1L));
     }
 }
 

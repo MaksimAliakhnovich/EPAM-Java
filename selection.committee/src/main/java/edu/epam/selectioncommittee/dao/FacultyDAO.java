@@ -9,8 +9,6 @@ import java.util.List;
  */
 public interface FacultyDAO {
     List<Faculty> getAll();
-    Faculty getById(Long id);
-    Faculty create(Faculty faculty);
 }
 
 

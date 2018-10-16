@@ -1,6 +1,6 @@
 package main.java.edu.epam.selectioncommittee.service;
 
-import main.java.edu.epam.selectioncommittee.dao.connection.CreateConnection;
+import main.java.edu.epam.selectioncommittee.dao.connection.CustomConnection;
 import main.java.edu.epam.selectioncommittee.dao.connection.factories.ConnectionFactory;
 import main.java.edu.epam.selectioncommittee.dao.connection.factories.MySqlConnectionFactory;
 import main.java.edu.epam.selectioncommittee.dao.connection.factories.SqliteConnectionFactory;
@@ -20,7 +20,7 @@ public class ConnectionService {
 
     public Connection getConnection() {
         ConnectionFactory connectionFactory = getConnectionFactory(databaseType);
-        CreateConnection connection = connectionFactory.getConnection();
+        CustomConnection connection = connectionFactory.getConnection();
         return connection.getConnection();
     }
 

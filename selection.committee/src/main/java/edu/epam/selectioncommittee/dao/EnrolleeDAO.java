@@ -7,7 +7,7 @@ import java.util.List;
 public interface EnrolleeDAO {
     List<Enrollee> getAll();
     Enrollee getById(Long id);
-    String add(String first_name, String last_name, int score);
-    Long getByFNameAndLNameAndScore(String first_name, String last_name, int score); // нужно по паспорту искать
+    String add(String firstName, String lastName, int score, String passport);
+    Long getByPassport(String passport);
 }
 

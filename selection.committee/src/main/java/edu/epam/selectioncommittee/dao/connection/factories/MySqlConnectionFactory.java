@@ -1,6 +1,6 @@
 package main.java.edu.epam.selectioncommittee.dao.connection.factories;
 
-import main.java.edu.epam.selectioncommittee.dao.connection.CreateConnection;
+import main.java.edu.epam.selectioncommittee.dao.connection.CustomConnection;
 import main.java.edu.epam.selectioncommittee.dao.connection.MySqlConnection;
 
 /**
@@ -8,7 +8,7 @@ import main.java.edu.epam.selectioncommittee.dao.connection.MySqlConnection;
  */
 public class MySqlConnectionFactory implements ConnectionFactory {
     @Override
-    public CreateConnection getConnection() {
+    public CustomConnection getConnection() {
         return new MySqlConnection();
     }
 }

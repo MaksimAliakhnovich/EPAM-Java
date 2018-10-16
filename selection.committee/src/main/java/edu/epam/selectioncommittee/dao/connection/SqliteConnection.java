@@ -5,7 +5,7 @@ import java.sql.Connection;
 /**
  * Created by mascon on 12.10.2018.
  */
-public class SqliteConnection implements CreateConnection {
+public class SqliteConnection implements CustomConnection {
     @Override
     public Connection getConnection() {
         return ConnectorDB.getConnection();

@@ -2,6 +2,7 @@ package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.RegisterDAO;
 import main.java.edu.epam.selectioncommittee.entity.Register;
+import main.java.edu.epam.selectioncommittee.utils.Student;
 import main.java.edu.epam.selectioncommittee.service.ConnectionService;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
 
@@ -16,73 +17,105 @@ import java.util.List;
  * Created by mascon on 13.10.2018.
  */
 public class RegisterDAOImpl implements RegisterDAO{
-    private PreparedStatement ps = null;
-    private ResultSet rs = null;
-    private Connection cn = null;
+    private final static String SQL_GET_ALL = "SELECT id, enrollee_id, subject_id," +
+            " subject_score, faculty_id FROM register;";
+    private final static String SQL_ADD = "INSERT INTO register (enrollee_id, subject_id, subject_score, faculty_id)" +
+            " VALUES (?, ?, ?, ?);";
+    private final static String SQL_GET_RECRUITMENT_PLAN_BY_FAC_ID = "SELECT recruitment_plan FROM faculty WHERE id = ?";
+    private final static String SQL_GET_TOP_ENROLLEE = "SELECT enrollee_id, enrollee.first_name, enrollee.last_name, " +
+            "SUM(subject_score) + enrollee.certificate_score total FROM register " +
+            "LEFT JOIN enrollee ON enrollee.id = register.enrollee_id " +
+            "WHERE faculty_id = ? " +
+            "GROUP BY enrollee_id " +
+            "ORDER BY total DESC " +
+            "LIMIT 0, ?;";
+    private PreparedStatement prepStat = null;
+    private ResultSet resSet = null;
+    private Connection conn = null;
 
     @Override
     public List<Register> getAll() {
-        final String SQL = "SELECT id, enrollee_id, subject_id, subject_score, faculty_id FROM register;";
         List<Register> list = new ArrayList<>();
-
         try {
-            cn = ConnectionService.getInstance().getConnection();
-            ps = cn.prepareStatement(SQL);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Long id = rs.getLong("id");
-                Long enrollee_id = rs.getLong("enrollee_id");
-                Long subject_id = rs.getLong("subject_id");
-                int subject_score = rs.getInt("subject_score");
-                Long faculty_id = rs.getLong("faculty_id");
-                list.add(new Register(id, enrollee_id, subject_id, subject_score, faculty_id));
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_GET_ALL);
+            resSet = prepStat.executeQuery();
+            while (resSet.next()) {
+                Long id = resSet.getLong("id");
+                Long enrolleeId = resSet.getLong("enrollee_id");
+                Long subjectId = resSet.getLong("subject_id");
+                int subjectScore = resSet.getInt("subject_score");
+                Long facultyId = resSet.getLong("faculty_id");
+                list.add(new Register(id, enrolleeId, subjectId, subjectScore, facultyId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(rs, ps, cn);
+            CloseConnection.closeConnection(resSet, prepStat, conn);
         }
         return list;
     }
 
     @Override
-    public String add(Long enrollee_id,
-                      Long subject_id_1, int subject_score_1,
-                      Long subject_id_2, int subject_score_2,
-                      Long subject_id_3, int subject_score_3,
-                      Long faculty_id) {
-        final String SQL = "INSERT INTO register (enrollee_id, subject_id, subject_score, faculty_id)" +
-                " VALUES (?, ?, ?, ?)";
+    public String add(Long enrolleeId,
+                      Long subjectId1, int subjectScore1,
+                      Long subjectId2, int subjectScore2,
+                      Long subjectId3, int subjectScore3,
+                      Long facultyId) {
         int count = 0;
         try {
-            cn = ConnectionService.getInstance().getConnection();
-            ps = cn.prepareStatement(SQL);
-            ps.setLong(1, enrollee_id);
-            ps.setLong(2, subject_id_1);
-            ps.setInt(3, subject_score_1);
-            ps.setLong(4, faculty_id);
-            ps.addBatch();
-            ps.setLong(1, enrollee_id);
-            ps.setLong(2, subject_id_2);
-            ps.setInt(3, subject_score_2);
-            ps.setLong(4, faculty_id);
-            ps.addBatch();
-            ps.setLong(1, enrollee_id);
-            ps.setLong(2, subject_id_3);
-            ps.setInt(3, subject_score_3);
-            ps.setLong(4, faculty_id);
-            ps.addBatch();
-            count = ps.executeBatch().length;
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_ADD);
+            addLine(enrolleeId, subjectId1, subjectScore1, facultyId);
+            addLine(enrolleeId, subjectId2, subjectScore2, facultyId);
+            addLine(enrolleeId, subjectId3, subjectScore3, facultyId);
+            count = prepStat.executeBatch().length;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(rs, ps, cn);
+            CloseConnection.closeConnection(resSet, prepStat, conn);
         }
         return count + " row(s) added successfully.";
     }
 
-    @Override
-    public List<Register> getByEnrolleeId(Long id) {
-        return null;
+    private void addLine(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId) throws SQLException {
+        prepStat.setLong(1, enrolleeId);
+        prepStat.setLong(2, subjectId);
+        prepStat.setInt(3, subjectScore);
+        prepStat.setLong(4, facultyId);
+        prepStat.addBatch();
     }
+
+    @Override
+    public List<Student> getStudentByFacultyId(Long facultyId) {
+        List<Student> list = new ArrayList<>();
+        try {
+            conn = ConnectionService.getInstance().getConnection();
+            prepStat = conn.prepareStatement(SQL_GET_RECRUITMENT_PLAN_BY_FAC_ID);
+            prepStat.setLong(1, facultyId);
+            resSet = prepStat.executeQuery();
+            resSet.next();
+            int plan = resSet.getInt("recruitment_plan");
+
+            prepStat = conn.prepareStatement(SQL_GET_TOP_ENROLLEE);
+            prepStat.setLong(1, facultyId);
+            prepStat.setInt(2, plan);
+            resSet = prepStat.executeQuery();
+
+            int pos = 1;
+            while (resSet.next()) {
+                String firstName = resSet.getString("enrollee.first_name");
+                String lastName = resSet.getString("enrollee.last_name");
+                int total = resSet.getInt("total");
+                list.add(new Student(pos, firstName, lastName, total));
+                pos++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseConnection.closeConnection(resSet, prepStat, conn);
+        }
+        return list;
+    }
+
 }

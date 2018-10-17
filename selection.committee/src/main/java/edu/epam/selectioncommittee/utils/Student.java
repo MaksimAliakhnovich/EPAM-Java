@@ -16,38 +16,6 @@ public class Student {
         this.totalScore = totalScore;
     }
 
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public int getTotalScore() {
-        return totalScore;
-    }
-
-    public void setTotalScore(int totalScore) {
-        this.totalScore = totalScore;
-    }
-
     @Override
     public String toString() {
         return position + ": " + firstName + " " + lastName + ", баллы: " + totalScore;

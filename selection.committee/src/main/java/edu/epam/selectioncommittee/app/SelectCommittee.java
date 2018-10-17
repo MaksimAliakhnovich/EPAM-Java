@@ -5,7 +5,7 @@ import main.java.edu.epam.selectioncommittee.dao.connection.factories.MySqlDAOFa
 import main.java.edu.epam.selectioncommittee.dao.connection.factories.SqliteDAOFactory;
 import main.java.edu.epam.selectioncommittee.service.ConnectionService;
 import main.java.edu.epam.selectioncommittee.service.LogicService;
-import main.java.edu.epam.selectioncommittee.utils.ReadProperties;
+import main.java.edu.epam.selectioncommittee.utils.ConfigProperties;
 
 /**
  * Created by mascon on 13.10.2018.
@@ -14,8 +14,7 @@ public class SelectCommittee {
     private static LogicService configureLogicService() {
         LogicService logicService;
         DAOFactory daoFactory;
-        ReadProperties props = new ReadProperties();
-        String databaseType = props.getAllProperties().getProperty("DB_TYPE");
+        String databaseType = ConfigProperties.getProperty("DB_TYPE");
         ConnectionService.getInstance().setDatabaseType(databaseType);
 
         if (databaseType.equals("mysql")) {
@@ -30,6 +29,7 @@ public class SelectCommittee {
 
     public void start() {
         LogicService logicService = configureLogicService();
+
         logicService.print(logicService.getAllFac());
         logicService.print(logicService.getAllSubNameByFacId(1L));
 

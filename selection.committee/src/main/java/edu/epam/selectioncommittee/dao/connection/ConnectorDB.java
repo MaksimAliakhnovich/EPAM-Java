@@ -1,6 +1,6 @@
 package main.java.edu.epam.selectioncommittee.dao.connection;
 
-import main.java.edu.epam.selectioncommittee.utils.ReadProperties;
+import main.java.edu.epam.selectioncommittee.utils.ConfigProperties;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,8 +11,7 @@ import java.sql.SQLException;
  */
 class ConnectorDB {
     static Connection getConnection() {
-        ReadProperties props = new ReadProperties();
-        String driver = props.getAllProperties().getProperty("DB_DRIVER_CLASS");
+        String driver = ConfigProperties.getProperty("DB_DRIVER_CLASS");
         if (driver != null) {
             try {
                 Class.forName(driver);
@@ -21,9 +20,9 @@ class ConnectorDB {
             }
         }
 
-        String url = props.getAllProperties().getProperty("DB_URL");
-        String username = props.getAllProperties().getProperty("DB_USERNAME");
-        String password = props.getAllProperties().getProperty("DB_PASSWORD");
+        String url = ConfigProperties.getProperty("DB_URL");
+        String username = ConfigProperties.getProperty("DB_USERNAME");
+        String password = ConfigProperties.getProperty("DB_PASSWORD");
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, username, password);

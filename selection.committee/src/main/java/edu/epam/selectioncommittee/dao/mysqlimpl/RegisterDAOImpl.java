@@ -3,7 +3,7 @@ package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
 import main.java.edu.epam.selectioncommittee.dao.RegisterDAO;
 import main.java.edu.epam.selectioncommittee.entity.Register;
 import main.java.edu.epam.selectioncommittee.utils.Student;
-import main.java.edu.epam.selectioncommittee.service.ConnectionService;
+import main.java.edu.epam.selectioncommittee.utils.DBConnectionPool;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
 
 import java.sql.Connection;
@@ -32,12 +32,13 @@ public class RegisterDAOImpl implements RegisterDAO{
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;
+    private DBConnectionPool dbConnectionPool = new DBConnectionPool();
 
     @Override
     public List<Register> getAll() {
         List<Register> list = new ArrayList<>();
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_GET_ALL);
             resSet = prepStat.executeQuery();
             while (resSet.next()) {
@@ -51,7 +52,8 @@ public class RegisterDAOImpl implements RegisterDAO{
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
         return list;
     }
@@ -60,16 +62,17 @@ public class RegisterDAOImpl implements RegisterDAO{
     public String add(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId) {
         int count = 0;
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_ADD);
             addLine(enrolleeId, subjectId, subjectScore, facultyId);
             count = prepStat.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
-        return count + " row(s) added successfully.";
+        return count + " row(s) added successfully."; // убедиться что добавилось
     }
 
     private void addLine(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId) throws SQLException {
@@ -84,7 +87,7 @@ public class RegisterDAOImpl implements RegisterDAO{
     public List<Student> getStudentByFacultyId(Long facultyId) {
         List<Student> list = new ArrayList<>();
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_GET_RECRUITMENT_PLAN_BY_FAC_ID);
             prepStat.setLong(1, facultyId);
             resSet = prepStat.executeQuery();
@@ -107,9 +110,9 @@ public class RegisterDAOImpl implements RegisterDAO{
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
         return list;
     }
-
 }

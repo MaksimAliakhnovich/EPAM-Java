@@ -2,7 +2,7 @@ package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.FacultySubjectDAO;
 import main.java.edu.epam.selectioncommittee.entity.FacultySubject;
-import main.java.edu.epam.selectioncommittee.service.ConnectionService;
+import main.java.edu.epam.selectioncommittee.utils.DBConnectionPool;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
 
 import java.sql.Connection;
@@ -26,12 +26,13 @@ public class FacultySubjectDAOImpl implements FacultySubjectDAO {
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;
+    private DBConnectionPool dbConnectionPool = new DBConnectionPool();
 
     @Override
     public List<Long> getAllSubjectsIdByFacultyId(Long facultyId) {
         List<Long> list = new ArrayList<>();
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_GET_ALL_SUB_ID_BY_FAC_ID);
             prepStat.setLong(1, facultyId);
             resSet = prepStat.executeQuery();
@@ -42,7 +43,8 @@ public class FacultySubjectDAOImpl implements FacultySubjectDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
         return list;
     }
@@ -51,7 +53,7 @@ public class FacultySubjectDAOImpl implements FacultySubjectDAO {
     public List<FacultySubject> getAllSubjectsNameByFacultyId(Long facultyId) {
         List<FacultySubject> list = new ArrayList<>();
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_GET_ALL_SUB_NAME_BY_FAC_ID);
             prepStat.setLong(1, facultyId);
             resSet = prepStat.executeQuery();
@@ -63,7 +65,8 @@ public class FacultySubjectDAOImpl implements FacultySubjectDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
         return list;
     }

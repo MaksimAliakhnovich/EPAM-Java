@@ -2,13 +2,10 @@ package main.java.edu.epam.selectioncommittee.dao.sqliteimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.FacultySubjectDAO;
 import main.java.edu.epam.selectioncommittee.entity.FacultySubject;
-import main.java.edu.epam.selectioncommittee.service.ConnectionService;
-import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,41 +27,12 @@ public class FacultySubjectDAOImpl implements FacultySubjectDAO {
     @Override
     public List<Long> getAllSubjectsIdByFacultyId(Long facultyId) {
         List<Long> list = new ArrayList<>();
-        try {
-            conn = ConnectionService.getInstance().getConnection();
-            prepStat = conn.prepareStatement(SQL_GET_ALL_SUB_ID_BY_FAC_ID);
-            prepStat.setLong(1, facultyId);
-            resSet = prepStat.executeQuery();
-            while (resSet.next()) {
-                Long id = resSet.getLong("faculty_subject.id");
-                list.add(id);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
-        }
         return list;
     }
 
     @Override
     public List<FacultySubject> getAllSubjectsNameByFacultyId(Long facultyId) {
         List<FacultySubject> list = new ArrayList<>();
-        try {
-            conn = ConnectionService.getInstance().getConnection();
-            prepStat = conn.prepareStatement(SQL_GET_ALL_SUB_NAME_BY_FAC_ID);
-            prepStat.setLong(1, facultyId);
-            resSet = prepStat.executeQuery();
-            while (resSet.next()) {
-                int sNum = resSet.getInt("subject_num");
-                String sName = resSet.getString("subject.name");
-                list.add(new FacultySubject(sNum, sName));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
-        }
         return list;
     }
 }

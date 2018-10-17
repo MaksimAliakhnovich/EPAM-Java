@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface SubjectDAO {
     List<Subject> getAll();
-    Subject getById(Long id);
-    Subject create(Subject faculty);
+    Subject getById(Long id); // на будущее
+    Subject create(Subject faculty); // на будущее
 }

@@ -2,7 +2,7 @@ package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.FacultyDAO;
 import main.java.edu.epam.selectioncommittee.entity.Faculty;
-import main.java.edu.epam.selectioncommittee.service.ConnectionService;
+import main.java.edu.epam.selectioncommittee.utils.DBConnectionPool;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
 
 import java.sql.Connection;
@@ -20,12 +20,14 @@ public class FacultyDAOImpl implements FacultyDAO {
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;
+    private DBConnectionPool dbConnectionPool = new DBConnectionPool();
 
     @Override
     public List<Faculty> getAll() {
+        DBConnectionPool dbConnectionPool = new DBConnectionPool();
         List<Faculty> list = new ArrayList<>();
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_GET_ALL);
             resSet = prepStat.executeQuery();
             while (resSet.next()) {
@@ -37,7 +39,8 @@ public class FacultyDAOImpl implements FacultyDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
         return list;
     }

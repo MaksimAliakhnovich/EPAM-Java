@@ -2,8 +2,8 @@ package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.EnrolleeDAO;
 import main.java.edu.epam.selectioncommittee.entity.Enrollee;
-import main.java.edu.epam.selectioncommittee.service.ConnectionService;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
+import main.java.edu.epam.selectioncommittee.utils.DBConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,13 +23,13 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;
-
+    private DBConnectionPool dbConnectionPool = new DBConnectionPool();
 
     @Override
     public List<Enrollee> getAll() {
         List<Enrollee> list = new ArrayList<>();
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_GET_ALL);
             resSet = prepStat.executeQuery();
             while (resSet.next()) {
@@ -42,7 +42,8 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
         return list;
     }
@@ -51,7 +52,7 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
     public Enrollee getById(Long reqId) {
         Enrollee enrollee = null;
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_GET_BY_ID);
             prepStat.setLong(1, reqId);
             resSet = prepStat.executeQuery();
@@ -64,7 +65,8 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
         return enrollee;
     }
@@ -73,7 +75,7 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
     public String add(String firstName, String lastName, int score, String passport) {
         int count = 0;
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_ADD);
             prepStat.setString(1, firstName);
             prepStat.setString(2, lastName);
@@ -83,16 +85,17 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
-        return count + " row(s) added successfully.";
+        return count + " row(s) added successfully."; // убедиться что добавилось
     }
 
     @Override
     public Long getByPassport(String passport) {
         Long id = 0L;
         try {
-            conn = ConnectionService.getInstance().getConnection();
+            conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_GET_BY_PASSPORT);
             prepStat.setString(1, passport);
             resSet = prepStat.executeQuery();
@@ -101,7 +104,8 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.closeConnection(resSet, prepStat, conn);
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
         }
         return id;
     }

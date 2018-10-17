@@ -1,8 +1,8 @@
 package main.java.edu.epam.selectioncommittee.app;
 
-import main.java.edu.epam.selectioncommittee.dao.connection.factories.DAOFactory;
-import main.java.edu.epam.selectioncommittee.dao.connection.factories.MySqlDAOFactory;
-import main.java.edu.epam.selectioncommittee.dao.connection.factories.SqliteDAOFactory;
+import main.java.edu.epam.selectioncommittee.dao.factories.DAOFactory;
+import main.java.edu.epam.selectioncommittee.dao.factories.MySqlDAOFactory;
+import main.java.edu.epam.selectioncommittee.dao.factories.SqliteDAOFactory;
 import main.java.edu.epam.selectioncommittee.service.ConnectionService;
 import main.java.edu.epam.selectioncommittee.service.LogicService;
 import main.java.edu.epam.selectioncommittee.utils.ConfigProperties;

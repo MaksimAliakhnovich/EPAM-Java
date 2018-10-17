@@ -1,4 +1,4 @@
-package main.java.edu.epam.selectioncommittee.dao.connection.factories;
+package main.java.edu.epam.selectioncommittee.dao.factories;
 
 import main.java.edu.epam.selectioncommittee.dao.*;
 

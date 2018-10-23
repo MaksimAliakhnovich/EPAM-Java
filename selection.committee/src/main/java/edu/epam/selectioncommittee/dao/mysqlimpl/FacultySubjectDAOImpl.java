@@ -2,6 +2,7 @@ package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.FacultySubjectDAO;
 import main.java.edu.epam.selectioncommittee.entity.FacultySubject;
+import main.java.edu.epam.selectioncommittee.utils.ConfigurationManager;
 import main.java.edu.epam.selectioncommittee.utils.DBConnectionPool;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
 
@@ -16,13 +17,10 @@ import java.util.List;
  * Created by mascon on 14.10.2018.
  */
 public class FacultySubjectDAOImpl implements FacultySubjectDAO {
-    private final static String SQL_GET_ALL_SUB_ID_BY_FAC_ID = "SELECT faculty_subject.id FROM faculty_subject " +
-            "LEFT JOIN faculty ON faculty.id = faculty_subject.faculty_id " +
-            "WHERE faculty_id = ?;";
-    private final static String SQL_GET_ALL_SUB_NAME_BY_FAC_ID = "SELECT subject_num, subject.name FROM faculty_subject " +
-            "LEFT JOIN faculty ON faculty.id = faculty_subject.faculty_id " +
-            "LEFT JOIN subject ON subject.id = faculty_subject.subject_id " +
-            "WHERE faculty_id = ?;";
+    private final static String SQL_GET_ALL_SUB_ID_BY_FAC_ID =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("facultyGetAllSubIdByFacId");
+    private final static String SQL_GET_ALL_SUB_NAME_BY_FAC_ID =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("facultyGetAlSubNameByFacId");
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;

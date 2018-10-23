@@ -11,13 +11,14 @@ import java.util.List;
  * Created by mascon on 11.10.2018.
  */
 public class DBConnectionPool {
-    private String driver = ConfigProperties.getProperty("DB_DRIVER_CLASS");
-    private String url = ConfigProperties.getProperty("DB_URL");
-    private String username = ConfigProperties.getProperty("DB_USERNAME");
-    private String password = ConfigProperties.getProperty("DB_PASSWORD");
+    private String driver = ConfigurationManager.INSTANCE.getInstance().getProperty("DB_DRIVER_CLASS");
+    private String url = ConfigurationManager.INSTANCE.getInstance().getProperty("DB_URL");
+    private String username = ConfigurationManager.INSTANCE.getInstance().getProperty("DB_USERNAME");
+    private String password = ConfigurationManager.INSTANCE.getInstance().getProperty("DB_PASSWORD");
     private List<Connection> availableConnections = Collections.synchronizedList(new ArrayList<>());
     private List<Connection> usedConnections = Collections.synchronizedList(new ArrayList<>());
-    private int poolMaximumActiveConnections = Integer.parseInt(ConfigProperties.getProperty("poolMaximumActiveConnections"));
+    private int poolMaximumActiveConnections =
+            Integer.parseInt(ConfigurationManager.INSTANCE.getInstance().getProperty("poolMaximumActiveConnections"));
 
     // заполнение пула подключениями
     public void ConnectionPool() {

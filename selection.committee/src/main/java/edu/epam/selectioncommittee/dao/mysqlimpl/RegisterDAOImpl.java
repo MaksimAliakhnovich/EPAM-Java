@@ -2,6 +2,7 @@ package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.RegisterDAO;
 import main.java.edu.epam.selectioncommittee.entity.Register;
+import main.java.edu.epam.selectioncommittee.utils.ConfigurationManager;
 import main.java.edu.epam.selectioncommittee.utils.Student;
 import main.java.edu.epam.selectioncommittee.utils.DBConnectionPool;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
@@ -17,18 +18,14 @@ import java.util.List;
  * Created by mascon on 13.10.2018.
  */
 public class RegisterDAOImpl implements RegisterDAO{
-    private final static String SQL_GET_ALL = "SELECT id, enrollee_id, subject_id," +
-            " subject_score, faculty_id FROM register;";
-    private final static String SQL_ADD = "INSERT INTO register (enrollee_id, subject_id, subject_score, faculty_id)" +
-            " VALUES (?, ?, ?, ?);";
-    private final static String SQL_GET_RECRUITMENT_PLAN_BY_FAC_ID = "SELECT recruitment_plan FROM faculty WHERE id = ?";
-    private final static String SQL_GET_TOP_ENROLLEE = "SELECT enrollee_id, enrollee.first_name, enrollee.last_name, " +
-            "SUM(subject_score) + enrollee.certificate_score total FROM register " +
-            "LEFT JOIN enrollee ON enrollee.id = register.enrollee_id " +
-            "WHERE faculty_id = ? " +
-            "GROUP BY enrollee_id " +
-            "ORDER BY total DESC " +
-            "LIMIT 0, ?;";
+    private final static String SQL_GET_ALL =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("registerSqlGetAll");
+    private final static String SQL_ADD =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("registerAdd");
+    private final static String SQL_GET_RECRUITMENT_PLAN_BY_FAC_ID =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("registerGetRecruitmentPlanByFacId");
+    private final static String SQL_GET_TOP_ENROLLEE =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("registerGetTopEnrollee");
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;

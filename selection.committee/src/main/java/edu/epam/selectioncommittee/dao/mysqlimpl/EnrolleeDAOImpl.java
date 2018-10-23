@@ -3,6 +3,7 @@ package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
 import main.java.edu.epam.selectioncommittee.dao.EnrolleeDAO;
 import main.java.edu.epam.selectioncommittee.entity.Enrollee;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
+import main.java.edu.epam.selectioncommittee.utils.ConfigurationManager;
 import main.java.edu.epam.selectioncommittee.utils.DBConnectionPool;
 
 import java.sql.Connection;
@@ -16,10 +17,14 @@ import java.util.List;
  * Created by mascon on 11.10.2018.
  */
 public class EnrolleeDAOImpl implements EnrolleeDAO {
-    private final static String SQL_GET_ALL = "SELECT id, first_name, last_name, certificate_score FROM enrollee;";
-    private final static String SQL_GET_BY_ID = "SELECT id, first_name, last_name, certificate_score FROM enrollee WHERE id = ?;";
-    private final static String SQL_ADD = "INSERT INTO enrollee (first_name, last_name, certificate_score, passport) VALUES (?, ?, ?, ?);";
-    private final static String SQL_GET_BY_PASSPORT = "SELECT id FROM enrollee WHERE passport = ?;";
+    private final static String SQL_GET_ALL =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeGetAll");
+    private final static String SQL_GET_BY_ID =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeGetById");
+    private final static String SQL_ADD =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeAdd");
+    private final static String SQL_GET_BY_PASSPORT =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeGetByPassport");
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;

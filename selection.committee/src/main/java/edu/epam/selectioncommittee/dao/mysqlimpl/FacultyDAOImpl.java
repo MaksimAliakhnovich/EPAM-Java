@@ -2,6 +2,7 @@ package main.java.edu.epam.selectioncommittee.dao.mysqlimpl;
 
 import main.java.edu.epam.selectioncommittee.dao.FacultyDAO;
 import main.java.edu.epam.selectioncommittee.entity.Faculty;
+import main.java.edu.epam.selectioncommittee.utils.ConfigurationManager;
 import main.java.edu.epam.selectioncommittee.utils.DBConnectionPool;
 import main.java.edu.epam.selectioncommittee.utils.CloseConnection;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by mascon on 14.10.2018.
  */
 public class FacultyDAOImpl implements FacultyDAO {
-    private final static String SQL_GET_ALL = "SELECT id, name, recruitment_plan FROM faculty;";
+    private final static String SQL_GET_ALL = ConfigurationManager.INSTANCE.getInstance().getProperty("facultyGetAll");
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;

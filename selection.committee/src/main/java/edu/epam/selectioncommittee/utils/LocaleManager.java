@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 public enum LocaleManager {
     INSTANCE;
     private ResourceBundle resourceBundle;
-    private final String resourceName = "src/main/resources/messages.properties";
+    private final String resourceName = "messages";
 
     LocaleManager() {
         this.resourceBundle = ResourceBundle.getBundle(resourceName, Locale.getDefault());

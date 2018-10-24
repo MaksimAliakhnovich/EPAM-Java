@@ -7,7 +7,7 @@ import java.util.List;
 public interface EnrolleeDAO {
     List<Enrollee> getAll();
     Enrollee getById(Long id);
-    String add(String firstName, String lastName, int score, String passport);
+    int add(String firstName, String lastName, int score, String passport);
     Long getByPassport(String passport);
 }
 

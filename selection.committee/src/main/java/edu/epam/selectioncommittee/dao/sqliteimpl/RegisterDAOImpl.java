@@ -38,9 +38,9 @@ public class RegisterDAOImpl implements RegisterDAO {
     }
 
     @Override
-    public String add(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId) {
+    public int add(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId) {
         int count = 0;
-        return count + " row(s) added successfully.";
+        return count;
     }
 
     private void addLine(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId) throws SQLException {

@@ -35,9 +35,9 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
     }
 
     @Override
-    public String add(String firstName, String lastName, int score, String passport) {
+    public int add(String firstName, String lastName, int score, String passport) {
         int count = 0;
-        return count + " row(s) added successfully.";
+        return count;
     }
 
     @Override

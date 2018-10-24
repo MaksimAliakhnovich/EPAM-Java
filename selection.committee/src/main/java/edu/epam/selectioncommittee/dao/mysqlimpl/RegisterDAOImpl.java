@@ -56,7 +56,7 @@ public class RegisterDAOImpl implements RegisterDAO{
     }
 
     @Override
-    public String add(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId) {
+    public int add(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId) {
         int count = 0;
         try {
             conn = dbConnectionPool.getPoolConnection();
@@ -69,7 +69,7 @@ public class RegisterDAOImpl implements RegisterDAO{
             CloseConnection.closeConnection(resSet, prepStat);
             dbConnectionPool.putPoolConnection(conn);
         }
-        return count + " row(s) added successfully."; // убедиться что добавилось
+        return count;
     }
 
     private void addLine(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId) throws SQLException {

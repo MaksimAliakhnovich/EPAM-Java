@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface RegisterDAO {
     List<Register> getAll();
-    String add(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId);
+    int add(Long enrolleeId, Long subjectId, int subjectScore, Long facultyId);
     List<Student> getStudentByFacultyId(Long facultyId);
 }

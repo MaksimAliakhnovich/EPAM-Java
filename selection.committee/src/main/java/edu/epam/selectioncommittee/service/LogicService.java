@@ -7,6 +7,7 @@ import main.java.edu.epam.selectioncommittee.dao.RegisterDAO;
 import main.java.edu.epam.selectioncommittee.dao.factories.DAOFactory;
 import main.java.edu.epam.selectioncommittee.entity.Faculty;
 import main.java.edu.epam.selectioncommittee.entity.FacultySubject;
+import main.java.edu.epam.selectioncommittee.utils.LocaleManager;
 import main.java.edu.epam.selectioncommittee.utils.Student;
 
 import java.util.List;
@@ -20,18 +21,20 @@ public class LogicService {
     private FacultySubjectDAO facultySubjectDAO;
     private RegisterDAO registerDAO;
 
+    private Long enrolleeId = 0L;
+    private int subScore1 = 0;
+    private int subScore2 = 0;
+    private int subScore3 = 0;
+    private Long facultyId = 0L;
+
+    private LocaleManager manager = LocaleManager.INSTANCE.getInstance();
+
     public LogicService(DAOFactory daoFactory) {
         enrolleeDAO = daoFactory.createEnrolleeDAO();
         facultyDAO = daoFactory.createFacultyDAO();
         facultySubjectDAO = daoFactory.createFacultySubjectDAO();
         registerDAO = daoFactory.createRegisterDAO();
     }
-
-    private Long enrolleeId = 0L;
-    private int subScore1 = 0;
-    private int subScore2 = 0;
-    private int subScore3 = 0;
-    private Long facultyId = 0L;
 
     // получение всех факультетов
     public List<Faculty> getAllFac() {
@@ -45,8 +48,13 @@ public class LogicService {
 
     // добавление абитуриента с аттестатом
     public void addEnrollee(String firstName, String lastName, int certificateScore, String passport) {
-        System.out.println(enrolleeDAO.add(firstName, lastName, certificateScore, passport));
-        enrolleeId = enrolleeDAO.getByPassport(passport);
+        int add = enrolleeDAO.add(firstName, lastName, certificateScore, passport);
+        if (add == 1) {
+            enrolleeId = enrolleeDAO.getByPassport(passport);
+            System.out.println(manager.getString("yourDataIsListed"));
+        } else {
+            System.out.println(manager.getString("yourDataIsNotListed"));
+        }
     }
 
     // сбор баллов по предметам факультета
@@ -59,15 +67,21 @@ public class LogicService {
 
     // добавление студента с баллами по 3м предметам в регистр
     public void addRegLine() {
+        int add = 0;
         List<Long> subsId = facultySubjectDAO.getAllSubjectsIdByFacultyId(facultyId);
-        System.out.println(registerDAO.add(enrolleeId, subsId.get(0), subScore1, facultyId));
-        System.out.println(registerDAO.add(enrolleeId, subsId.get(1), subScore2, facultyId));
-        System.out.println(registerDAO.add(enrolleeId, subsId.get(2), subScore3, facultyId));
-        enrolleeId = 0L;
-        subScore1 = 0;
-        subScore2 = 0;
-        subScore3 = 0;
-        facultyId = 0L;
+        add += registerDAO.add(enrolleeId, subsId.get(0), subScore1, facultyId);
+        add += registerDAO.add(enrolleeId, subsId.get(1), subScore2, facultyId);
+        add += registerDAO.add(enrolleeId, subsId.get(2), subScore3, facultyId);
+        if (add == 3) {
+            enrolleeId = 0L;
+            subScore1 = 0;
+            subScore2 = 0;
+            subScore3 = 0;
+            facultyId = 0L;
+            System.out.println(manager.getString("yourDataIsListed"));
+        } else {
+            System.out.println(manager.getString("yourDataIsNotListed"));
+        }
     }
 
     // подсчёт зачисленных на факультеты

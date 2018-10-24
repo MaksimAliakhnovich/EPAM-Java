@@ -77,7 +77,7 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
     }
 
     @Override
-    public String add(String firstName, String lastName, int score, String passport) {
+    public int add(String firstName, String lastName, int score, String passport) {
         int count = 0;
         try {
             conn = dbConnectionPool.getPoolConnection();
@@ -93,7 +93,7 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
             CloseConnection.closeConnection(resSet, prepStat);
             dbConnectionPool.putPoolConnection(conn);
         }
-        return count + " row(s) added successfully."; // убедиться что добавилось
+        return count;
     }
 
     @Override

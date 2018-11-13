@@ -1,4 +1,4 @@
-package main.java.edu.epam.selectioncommittee.utils;
+package edu.epam.selectioncommittee.utils;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

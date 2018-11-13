@@ -1,7 +1,7 @@
-package main.java.edu.epam.selectioncommittee.dao.sqliteimpl;
+package edu.epam.selectioncommittee.dao.sqliteimpl;
 
-import main.java.edu.epam.selectioncommittee.dao.FacultySubjectDAO;
-import main.java.edu.epam.selectioncommittee.entity.FacultySubject;
+import edu.epam.selectioncommittee.dao.FacultySubjectDAO;
+import edu.epam.selectioncommittee.entity.FacultySubject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

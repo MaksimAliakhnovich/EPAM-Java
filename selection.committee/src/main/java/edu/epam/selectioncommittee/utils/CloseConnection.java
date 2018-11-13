@@ -1,4 +1,4 @@
-package main.java.edu.epam.selectioncommittee.utils;
+package edu.epam.selectioncommittee.utils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

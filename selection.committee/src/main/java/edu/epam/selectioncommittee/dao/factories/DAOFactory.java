@@ -1,6 +1,6 @@
-package main.java.edu.epam.selectioncommittee.dao.factories;
+package edu.epam.selectioncommittee.dao.factories;
 
-import main.java.edu.epam.selectioncommittee.dao.*;
+import edu.epam.selectioncommittee.dao.*;
 
 /**
  * Created by mascon on 16.10.2018.

@@ -1,10 +1,10 @@
-package main.java.edu.epam.selectioncommittee.dao.factories;
+package edu.epam.selectioncommittee.dao.factories;
 
-import main.java.edu.epam.selectioncommittee.dao.*;
-import main.java.edu.epam.selectioncommittee.dao.sqliteimpl.EnrolleeDAOImpl;
-import main.java.edu.epam.selectioncommittee.dao.sqliteimpl.FacultyDAOImpl;
-import main.java.edu.epam.selectioncommittee.dao.sqliteimpl.FacultySubjectDAOImpl;
-import main.java.edu.epam.selectioncommittee.dao.sqliteimpl.RegisterDAOImpl;
+import edu.epam.selectioncommittee.dao.*;
+import edu.epam.selectioncommittee.dao.sqliteimpl.EnrolleeDAOImpl;
+import edu.epam.selectioncommittee.dao.sqliteimpl.FacultyDAOImpl;
+import edu.epam.selectioncommittee.dao.sqliteimpl.FacultySubjectDAOImpl;
+import edu.epam.selectioncommittee.dao.sqliteimpl.RegisterDAOImpl;
 
 /**
  * Created by mascon on 16.10.2018.

@@ -1,4 +1,5 @@
-package main.java.edu.epam.selectioncommittee.servlets;
+/*
+package edu.epam.selectioncommittee.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,3 +39,4 @@ public class Login extends HttpServlet {
         }
     }
 }
+*/

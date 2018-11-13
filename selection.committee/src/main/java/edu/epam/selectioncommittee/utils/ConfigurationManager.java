@@ -1,7 +1,11 @@
-package main.java.edu.epam.selectioncommittee.utils;
+package edu.epam.selectioncommittee.utils;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
+
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -13,14 +17,14 @@ public enum ConfigurationManager {
 
     ConfigurationManager() {
         this.properties = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream("src/main/resources/dbConfig.properties")) {
-            this.properties.load(fileInputStream);
+        try (InputStream inputStream = ConfigurationManager.class.getClassLoader().getResourceAsStream("dbConfig.properties")) {
+            this.properties.load(inputStream);
         } catch (IOException e) {
             System.out.println("dbConfig.properties not found.");
             e.printStackTrace();
         }
-        try (FileInputStream fileInputStream = new FileInputStream("src/main/resources/sqlQuery.properties")) {
-            this.properties.load(fileInputStream);
+        try (InputStream inputStream = ConfigurationManager.class.getClassLoader().getResourceAsStream("sqlQuery.properties")) {
+            this.properties.load(inputStream);
         } catch (IOException e) {
             System.out.println("sqlQuery.properties not found.");
             e.printStackTrace();

@@ -1,6 +1,6 @@
-package main.java.edu.epam.selectioncommittee;
+package edu.epam.selectioncommittee;
 
-import main.java.edu.epam.selectioncommittee.app.SelectCommittee;
+import edu.epam.selectioncommittee.app.SelectCommittee;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package main.java.edu.epam.selectioncommittee.utils;
+package edu.epam.selectioncommittee.utils;
 
 /**
  * Created by mascon on 14.10.2018.

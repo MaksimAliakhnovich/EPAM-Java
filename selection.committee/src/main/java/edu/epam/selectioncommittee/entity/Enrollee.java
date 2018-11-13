@@ -1,4 +1,4 @@
-package main.java.edu.epam.selectioncommittee.entity;
+package edu.epam.selectioncommittee.entity;
 
 /**
  * Created by mascon on 11.10.2018.
@@ -8,6 +8,9 @@ public class Enrollee {
     private String firstName;
     private String lastName;
     private Integer certificateScore;
+
+    public Enrollee() {
+    }
 
     public Enrollee(Long id, String firstName, String lastName, Integer certificateScore) {
         this.id = id;

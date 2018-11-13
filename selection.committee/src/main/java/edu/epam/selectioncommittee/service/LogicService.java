@@ -1,14 +1,14 @@
-package main.java.edu.epam.selectioncommittee.service;
+package edu.epam.selectioncommittee.service;
 
-import main.java.edu.epam.selectioncommittee.dao.EnrolleeDAO;
-import main.java.edu.epam.selectioncommittee.dao.FacultyDAO;
-import main.java.edu.epam.selectioncommittee.dao.FacultySubjectDAO;
-import main.java.edu.epam.selectioncommittee.dao.RegisterDAO;
-import main.java.edu.epam.selectioncommittee.dao.factories.DAOFactory;
-import main.java.edu.epam.selectioncommittee.entity.Faculty;
-import main.java.edu.epam.selectioncommittee.entity.FacultySubject;
-import main.java.edu.epam.selectioncommittee.utils.LocaleManager;
-import main.java.edu.epam.selectioncommittee.utils.Student;
+import edu.epam.selectioncommittee.dao.EnrolleeDAO;
+import edu.epam.selectioncommittee.dao.FacultyDAO;
+import edu.epam.selectioncommittee.dao.FacultySubjectDAO;
+import edu.epam.selectioncommittee.dao.RegisterDAO;
+import edu.epam.selectioncommittee.dao.factories.DAOFactory;
+import edu.epam.selectioncommittee.entity.Faculty;
+import edu.epam.selectioncommittee.entity.FacultySubject;
+import edu.epam.selectioncommittee.utils.LocaleManager;
+import edu.epam.selectioncommittee.utils.Student;
 
 import java.util.List;
 

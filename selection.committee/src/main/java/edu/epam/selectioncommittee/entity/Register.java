@@ -1,4 +1,4 @@
-package main.java.edu.epam.selectioncommittee.entity;
+package edu.epam.selectioncommittee.entity;
 
 /**
  * Created by mascon on 11.10.2018.

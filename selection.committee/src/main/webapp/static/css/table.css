@@ -1,0 +1,24 @@
+th, td {
+  padding: 5px;
+}
+
+ td {
+  text-align: left;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+caption {
+  margin-bottom: 5px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+table {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}

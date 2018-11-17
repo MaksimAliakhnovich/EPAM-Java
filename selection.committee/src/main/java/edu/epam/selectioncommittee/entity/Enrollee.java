@@ -8,15 +8,17 @@ public class Enrollee {
     private String firstName;
     private String lastName;
     private Integer certificateScore;
+    private String passport;
 
     public Enrollee() {
     }
 
-    public Enrollee(Long id, String firstName, String lastName, Integer certificateScore) {
+    public Enrollee(Long id, String firstName, String lastName, Integer certificateScore, String passport) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.certificateScore = certificateScore;
+        this.passport = passport;
     }
 
     public Long getId() {
@@ -51,8 +53,16 @@ public class Enrollee {
         this.certificateScore = certificateScore;
     }
 
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
+    }
+
     @Override
     public String toString() {
-        return id + " " + firstName + " " + lastName + " " + certificateScore;
+        return id + " " + firstName + " " + lastName + " " + certificateScore + " " + passport;
     }
 }

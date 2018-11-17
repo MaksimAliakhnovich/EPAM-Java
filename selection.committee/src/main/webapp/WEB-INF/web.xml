@@ -9,37 +9,39 @@
         <!--<servlet-class>edu.epam.selectioncommittee.servlets.Login</servlet-class>-->
     <!--</servlet>-->
 
-    <servlet>
-        <servlet-name>Register</servlet-name>
-        <servlet-class>edu.epam.selectioncommittee.servlets.Register</servlet-class>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>Register</servlet-name>-->
+        <!--<servlet-class>edu.epam.selectioncommittee.servlets.Register</servlet-class>-->
+    <!--</servlet>-->
 
     <servlet>
         <servlet-name>Enrollee</servlet-name>
         <servlet-class>edu.epam.selectioncommittee.servlets.EnrolleeServlet</servlet-class>
-        <init-param>
-        <param-name>url</param-name>
-        <param-value>https://javatutorial.net</param-value>
-    </init-param>
-        <init-param>
-            <param-name>api-key</param-name>
-            <param-value>h6Thd5guE4Kl12g3</param-value>
-        </init-param>
-    </servlet>
+     </servlet>
+
+    <servlet>
+        <servlet-name>Faculty</servlet-name>
+        <servlet-class>edu.epam.selectioncommittee.servlets.FacultyServlet</servlet-class>
+     </servlet>
 
     <!--<servlet-mapping>-->
         <!--<servlet-name>Login</servlet-name>-->
         <!--<url-pattern>/login</url-pattern>-->
     <!--</servlet-mapping>-->
 
-    <servlet-mapping>
-        <servlet-name>Register</servlet-name>
-        <url-pattern>/register</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Register</servlet-name>-->
+        <!--<url-pattern>/register</url-pattern>-->
+    <!--</servlet-mapping>-->
 
     <servlet-mapping>
         <servlet-name>Enrollee</servlet-name>
         <url-pattern>/enrollee</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Faculty</servlet-name>
+        <url-pattern>/faculty</url-pattern>
     </servlet-mapping>
 
     <error-page>

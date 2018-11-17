@@ -39,10 +39,11 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
             resSet = prepStat.executeQuery();
             while (resSet.next()) {
                 Long id = resSet.getLong("id");
-                String first_name = resSet.getString("first_name");
-                String last_name = resSet.getString("last_name");
-                int certificate_score = resSet.getInt("certificate_score");
-                list.add(new Enrollee(id, first_name, last_name, certificate_score));
+                String firstName = resSet.getString("first_name");
+                String lastName = resSet.getString("last_name");
+                int certificateScore = resSet.getInt("certificate_score");
+                String passport = resSet.getString("passport");
+                list.add(new Enrollee(id, firstName, lastName, certificateScore, passport));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,7 +67,8 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
             String first_name = resSet.getString("first_name");
             String last_name = resSet.getString("last_name");
             int certificate_score = resSet.getInt("certificate_score");
-            enrollee = new Enrollee(id, first_name, last_name, certificate_score);
+            String passport = resSet.getString("passport");
+            enrollee = new Enrollee(id, first_name, last_name, certificate_score, passport);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

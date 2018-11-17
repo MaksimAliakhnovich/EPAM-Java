@@ -8,6 +8,7 @@ public interface EnrolleeDAO {
     List<Enrollee> getAll();
     Enrollee getById(Long id);
     int add(String firstName, String lastName, int score, String passport);
-    Long getByPassport(String passport);
+    int delete(String passport);
+    Enrollee getByPassport(String passport);
 }
 

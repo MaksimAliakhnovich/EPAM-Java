@@ -42,25 +42,25 @@ public class SelectCommittee {
 
         System.out.println(manager.getInstance().getString("welcome"));
         System.out.println(manager.getInstance().getString("listAllFaculties"));
-        logicService.print(logicService.getAllFac()); // выводим список доступных факультетов
+//        logicService.print(logicService.getAllFac()); // выводим список доступных факультетов
         System.out.println(manager.getInstance().getString("enterFacultyNumber"));
         logicService.print(logicService.getAllSubNameByFacId(1L)); // выводим список предметов выбранного факультета
         System.out.println(manager.getInstance().getString("listOfFaculty"));
 
         // вводим фио абитуриента и аттестат, записываем в БД
         System.out.println(manager.getInstance().getString("enterEnrolleeInfo"));
-        logicService.addEnrollee("Максим", "Олегович", 10, "HB0000001");
+//        logicService.addEnrollee("Максим", "Олегович", 10, "HB0000001");
 
         // вводим номер факультета и баллы по предметам факультета, записываем в БД
         System.out.println(manager.getInstance().getString("registerEnrolle"));
         logicService.getSubScore(1L, 10, 20, 30);
         logicService.addRegLine();
 
-        logicService.addEnrollee("Сергей", "Сергеевич", 20, "HB0000002");
+//        logicService.addEnrollee("Сергей", "Сергеевич", 20, "HB0000002");
         logicService.getSubScore(1L, 40, 50, 60);
         logicService.addRegLine();
 
-        logicService.addEnrollee("Кирилл", "Денисович", 30, "HB0000003");
+//        logicService.addEnrollee("Кирилл", "Денисович", 30, "HB0000003");
         logicService.getSubScore(1L, 70, 80, 90);
         logicService.addRegLine();
 

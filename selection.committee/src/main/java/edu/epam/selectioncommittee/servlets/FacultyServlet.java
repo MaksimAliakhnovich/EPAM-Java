@@ -1,10 +1,10 @@
 package edu.epam.selectioncommittee.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.epam.selectioncommittee.dao.FacultyDAO;
 import edu.epam.selectioncommittee.dao.factories.DAOFactory;
 import edu.epam.selectioncommittee.dao.factories.MySqlDAOFactory;
 import edu.epam.selectioncommittee.dao.factories.SqliteDAOFactory;
+import edu.epam.selectioncommittee.service.FacultyService;
 import edu.epam.selectioncommittee.utils.ConfigurationManager;
 import edu.epam.selectioncommittee.utils.DBConnectionPool;
 
@@ -19,13 +19,13 @@ import java.io.IOException;
  */
 
 public class FacultyServlet extends HttpServlet {
-    private FacultyDAO facultyDAO;
+    private FacultyService facultyService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json;charset=UTF-8");
         ObjectMapper mapper = new ObjectMapper();
-        resp.getWriter().write(mapper.writeValueAsString(facultyDAO.getAll()));
+        resp.getWriter().write(mapper.writeValueAsString(facultyService.getAllFac()));
         resp.getWriter().flush();
         resp.getWriter().close();
     }
@@ -43,6 +43,7 @@ public class FacultyServlet extends HttpServlet {
         } else {
             daoFactory = new SqliteDAOFactory();
         }
-        facultyDAO = daoFactory.createFacultyDAO();
+
+        facultyService = new FacultyService(daoFactory);
     }
 }

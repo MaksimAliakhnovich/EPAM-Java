@@ -41,8 +41,12 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
     }
 
     @Override
-    public Long getByPassport(String passport) {
-        Long id = 0L;
-        return id;
+    public int delete(String passport) {
+        return 0;
+    }
+
+    @Override
+    public Enrollee getByPassport(String passport) {
+        return null;
     }
 }

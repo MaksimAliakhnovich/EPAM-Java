@@ -25,6 +25,8 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
             ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeAdd");
     private final static String SQL_GET_BY_PASSPORT =
             ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeGetByPassport");
+    private final static String SQL_DELETE_BY_PASSPORT =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeDeleteByPassport");
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;
@@ -99,21 +101,43 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
     }
 
     @Override
-    public Long getByPassport(String passport) {
-        Long id = 0L;
+    public int delete(String passport) {
+        int count = 0;
         try {
             conn = dbConnectionPool.getPoolConnection();
-            prepStat = conn.prepareStatement(SQL_GET_BY_PASSPORT);
+            prepStat = conn.prepareStatement(SQL_DELETE_BY_PASSPORT);
             prepStat.setString(1, passport);
-            resSet = prepStat.executeQuery();
-            resSet.next();
-            id = resSet.getLong("id");
+            count = prepStat.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             CloseConnection.closeConnection(resSet, prepStat);
             dbConnectionPool.putPoolConnection(conn);
         }
-        return id;
+        return count;
+    }
+
+    @Override
+    public Enrollee getByPassport(String reqPassport) {
+        Enrollee enrollee = null;
+        try {
+            conn = dbConnectionPool.getPoolConnection();
+            prepStat = conn.prepareStatement(SQL_GET_BY_PASSPORT);
+            prepStat.setString(1, reqPassport);
+            resSet = prepStat.executeQuery();
+            resSet.next();
+            Long id = resSet.getLong("id");
+            String first_name = resSet.getString("first_name");
+            String last_name = resSet.getString("last_name");
+            int certificate_score = resSet.getInt("certificate_score");
+            String passport = resSet.getString("passport");
+            enrollee = new Enrollee(id, first_name, last_name, certificate_score, passport);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
+        }
+        return enrollee;
     }
 }

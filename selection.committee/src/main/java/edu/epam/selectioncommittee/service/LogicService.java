@@ -16,8 +16,8 @@ import java.util.List;
  * Created by mascon on 13.10.2018.
  */
 public class LogicService {
-    private EnrolleeDAO enrolleeDAO;
-    private FacultyDAO facultyDAO;
+//    private EnrolleeDAO enrolleeDAO;
+//    private FacultyDAO facultyDAO;
     private FacultySubjectDAO facultySubjectDAO;
     private RegisterDAO registerDAO;
 
@@ -30,16 +30,16 @@ public class LogicService {
     private LocaleManager manager = LocaleManager.INSTANCE.getInstance();
 
     public LogicService(DAOFactory daoFactory) {
-        enrolleeDAO = daoFactory.createEnrolleeDAO();
-        facultyDAO = daoFactory.createFacultyDAO();
+//        enrolleeDAO = daoFactory.createEnrolleeDAO();
+//        facultyDAO = daoFactory.createFacultyDAO();
         facultySubjectDAO = daoFactory.createFacultySubjectDAO();
         registerDAO = daoFactory.createRegisterDAO();
     }
 
     // получение всех факультетов
-    public List<Faculty> getAllFac() {
-        return facultyDAO.getAll();
-    }
+//    public List<Faculty> getAllFac() {
+//        return facultyDAO.getAll();
+//    }
 
     // получение предметов по выбранному факультету
     public List<FacultySubject> getAllSubNameByFacId(Long id) {
@@ -47,15 +47,15 @@ public class LogicService {
     }
 
     // добавление абитуриента с аттестатом
-    public void addEnrollee(String firstName, String lastName, int certificateScore, String passport) {
-        int add = enrolleeDAO.add(firstName, lastName, certificateScore, passport);
-        if (add == 1) {
-            enrolleeId = enrolleeDAO.getByPassport(passport);
-            System.out.println(manager.getString("yourDataIsListed"));
-        } else {
-            System.out.println(manager.getString("yourDataIsNotListed"));
-        }
-    }
+//    public void addEnrollee(String firstName, String lastName, int certificateScore, String passport) {
+//        int add = enrolleeDAO.add(firstName, lastName, certificateScore, passport);
+//        if (add == 1) {
+//            enrolleeId = enrolleeDAO.getByPassport(passport);
+//            System.out.println(manager.getString("yourDataIsListed"));
+//        } else {
+//            System.out.println(manager.getString("yourDataIsNotListed"));
+//        }
+//    }
 
     // сбор баллов по предметам факультета
     public void getSubScore(Long facultyId, int subScore1, int subScore2, int subScore3) {

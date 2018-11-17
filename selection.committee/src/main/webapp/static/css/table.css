@@ -2,8 +2,12 @@ th, td {
   padding: 5px;
 }
 
- td {
+td {
   text-align: left;
+}
+
+td:hover {
+  cursor: pointer;
 }
 
 table, th, td {
@@ -12,7 +16,7 @@ table, th, td {
 }
 
 caption {
-  margin-bottom: 5px;
+  margin: 5px 0;
   font-size: 20px;
   font-weight: 700;
 }

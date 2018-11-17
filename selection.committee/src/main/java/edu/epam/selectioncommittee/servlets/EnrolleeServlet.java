@@ -1,14 +1,16 @@
 package edu.epam.selectioncommittee.servlets;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.epam.selectioncommittee.dao.EnrolleeDAO;
 import edu.epam.selectioncommittee.dao.factories.DAOFactory;
 import edu.epam.selectioncommittee.dao.factories.MySqlDAOFactory;
 import edu.epam.selectioncommittee.dao.factories.SqliteDAOFactory;
 import edu.epam.selectioncommittee.entity.Enrollee;
+import edu.epam.selectioncommittee.service.EnrolleeService;
 import edu.epam.selectioncommittee.utils.ConfigurationManager;
 import edu.epam.selectioncommittee.utils.DBConnectionPool;
 
+import javax.lang.model.type.ReferenceType;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,18 +23,21 @@ import java.util.stream.Collectors;
  */
 
 public class EnrolleeServlet extends HttpServlet {
-    private EnrolleeDAO enrolleeDAO;
+    private EnrolleeService enrolleeService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json;charset=UTF-8");
         ObjectMapper mapper = new ObjectMapper();
-
         String requestBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Enrollee enrollee = mapper.readValue(requestBody, Enrollee.class);
-
-        int add = enrolleeDAO.add(enrollee.getFirstName(), enrollee.getLastName(), enrollee.getCertificateScore(), enrollee.getPassport());
-        resp.getWriter().write(mapper.writeValueAsString(enrolleeDAO.getAll()));
+        if(req.getHeader("type").equals("add")) {
+            Enrollee enrollee = mapper.readValue(requestBody, Enrollee.class);
+            enrolleeService.addEnrollee(enrollee.getFirstName(), enrollee.getLastName(), enrollee.getCertificateScore(), enrollee.getPassport());
+            resp.getWriter().write(mapper.writeValueAsString(enrolleeService.getAllEnrollee()));
+        } else {
+            String passport = mapper.readTree(requestBody).get("passport").asText();
+            resp.getWriter().write(mapper.writeValueAsString(enrolleeService.getEnrolleeByPassport(passport)));
+        }
         resp.getWriter().flush();
         resp.getWriter().close();
     }
@@ -41,9 +46,19 @@ public class EnrolleeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json;charset=UTF-8");
         ObjectMapper mapper = new ObjectMapper();
-        resp.getWriter().write(mapper.writeValueAsString(enrolleeDAO.getAll()));
+        resp.getWriter().write(mapper.writeValueAsString(enrolleeService.getAllEnrollee()));
         resp.getWriter().flush();
         resp.getWriter().close();
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json;charset=UTF-8");
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        String passport = mapper.readTree(requestBody).get("passport").asText();
+        enrolleeService.deleteEnrolleeByPassport(passport);
+        resp.getWriter().write(mapper.writeValueAsString(enrolleeService.getAllEnrollee()));
     }
 
     @Override
@@ -59,6 +74,6 @@ public class EnrolleeServlet extends HttpServlet {
         } else {
             daoFactory = new SqliteDAOFactory();
         }
-        enrolleeDAO = daoFactory.createEnrolleeDAO();
+        enrolleeService = new EnrolleeService(daoFactory);
     }
 }

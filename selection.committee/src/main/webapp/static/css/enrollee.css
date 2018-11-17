@@ -20,3 +20,7 @@ body {
 .main {
   margin-top: 70px;
 }
+
+.-select {
+  background-color: #b4e9b7;
+}

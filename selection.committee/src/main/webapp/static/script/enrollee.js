@@ -1,5 +1,6 @@
 let data = {};
 
+// Вывод списка абитуриентов
 const viewEnrolleeList = () => {
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
@@ -15,6 +16,7 @@ const viewEnrolleeList = () => {
 }
 viewEnrolleeList();
 
+// Создание таблицы
 const createTable = () => {
   const newTable = document.createElement('table');
   newTable.innerHTML =
@@ -52,15 +54,19 @@ const fillBodyEnrolleTable = () => {
     .join('\n');
 }
 
-// Добавление
+// Добавление абитуриента
 const addEnrolleeButton = document.querySelector('.add');
+const firstNameInput = document.querySelector('input[name=first-name]');
+const lastNameInput = document.querySelector('input[name=last-name]');
+const scoreInput = document.querySelector('input[name=score]');
+const passportInput = document.querySelector('input[name=passport]');
 const addEnrollee = e => {
   e.preventDefault();
   const xhr = new XMLHttpRequest();
-  const firstName = document.querySelector('input[name=first-name]').value;
-  const lastName = document.querySelector('input[name=last-name]').value;
-  const score = document.querySelector('input[name=score]').value;
-  const passport = document.querySelector('input[name=passport]').value;
+  const firstName = firstNameInput.value;
+  const lastName = lastNameInput.value;
+  const score = scoreInput.value;
+  const passport = passportInput.value;
   const body = JSON.stringify({
     firstName: firstName,
     lastName: lastName,
@@ -81,16 +87,21 @@ const addEnrollee = e => {
 };
 addEnrolleeButton.addEventListener('click', addEnrollee);
 
-// Кнопка "обновить"
-const button = document.createElement('button');
-button.innerHTML = "К списку";
-button.classList.add('button', 'refresh');
-button.style.cssText = `position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
-`;
+// Создание кнопки
+const createButton = (btnName, btnClass) => {
+  const button = document.createElement('button');
+  button.innerHTML = btnName;
+  button.classList.add('button', btnClass);
+  return button;
+}
 
-// Поиск
+// Удаление кнопки
+const deleteButton = btnClass => {
+  const button = document.querySelector(`.${btnClass}`);
+  button ? button.remove() : null;
+}
+
+// Поиск абитуриента
 const findEnrolleeButton = document.querySelector('.find');
 const findEnrollee = e => {
   e.preventDefault();
@@ -104,10 +115,14 @@ const findEnrollee = e => {
       data = Array.of(JSON.parse(xhr.response));
       fillHeadEnrolleTable();
       fillBodyEnrolleTable();
-      main.appendChild(button);
+      main.appendChild(createButton("К списку", "refresh"));
       const refreshEnrolleeButton = document.querySelector('.refresh');
+      refreshEnrolleeButton.style.cssText = `position: relative;
+      left: 50%;
+      transform: translate(-50%, 0);
+      `;
       refreshEnrolleeButton.addEventListener('click', () => {
-        main.removeChild(refreshEnrolleeButton);
+        deleteButton("refresh");
         viewEnrolleeList();
       });
     }
@@ -123,13 +138,16 @@ findEnrolleeButton.addEventListener('click', findEnrollee);
 let selectRow = null;
 tBody.addEventListener('click', e => {
   if (selectRow && e.target.parentElement != selectRow) {
-    selectRow.classList.remove('-select');
+    selectRow.classList.remove("-select");
+    // selectRow.classList.remove("-edit");
   }
   e.target.parentElement.classList.toggle("-select");
+  selectRow ? cancelEdit() : null;
   selectRow = document.querySelector('.-select');
+
 });
 
-// Удаление
+// Удаление абитуриента
 const deleteEnrolleeButton = document.querySelector('.delete');
 const deleteEnrollee = e => {
   e.preventDefault();
@@ -140,6 +158,7 @@ const deleteEnrollee = e => {
   });
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
+      deleteButton("refresh");
       viewEnrolleeList();
     }
   };
@@ -148,3 +167,63 @@ const deleteEnrollee = e => {
   xhr.send(body);
 };
 deleteEnrolleeButton.addEventListener('click', deleteEnrollee);
+
+// Редактирование абитуриента
+const buttonPanel = document.querySelector('.button-panel');
+const editEnrolleeButton = document.querySelector('.edit');
+const allInput = document.querySelectorAll('input');
+const editEnrollee = e => {
+  e.preventDefault();
+  if (selectRow != null && !selectRow.classList.contains("-edit")) {
+    selectRow.classList.add("-edit");
+    buttonPanel.appendChild(createButton("Save", "save"));
+    buttonPanel.appendChild(createButton("Cancel", "cancel"));
+    const saveEnrolleeButton = document.querySelector('.save');
+    const cancelEnrolleeButton = document.querySelector('.cancel');
+    saveEnrolleeButton.addEventListener('click', saveEnrollee);
+    cancelEnrolleeButton.addEventListener('click', cancelEdit);
+    allInput.forEach(item => { item.style.backgroundColor = "#dbc547" });
+    firstNameInput.value = selectRow.children[0].innerText;
+    lastNameInput.value = selectRow.children[1].innerText;
+    scoreInput.value = selectRow.children[2].innerText;
+    passportInput.value = selectRow.children[3].innerText;
+  }
+}
+editEnrolleeButton.addEventListener('click', editEnrollee);
+
+// Сохранение редактирования
+const saveEnrollee = e => {
+  e.preventDefault();
+  const oldPassport = selectRow.lastElementChild.innerText;
+  const firstName = firstNameInput.value;
+  const lastName = lastNameInput.value;
+  const score = scoreInput.value;
+  const passport = passportInput.value;
+  const xhr = new XMLHttpRequest();
+  const body = JSON.stringify({
+    firstName: firstName,
+    lastName: lastName,
+    certificateScore: score,
+    passport: passport
+  });
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      data = JSON.parse(xhr.response);
+      fillHeadEnrolleTable();
+      fillBodyEnrolleTable();
+      cancelEdit();
+    }
+  };
+  xhr.open("PUT", '/enrollee', true);
+  xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+  xhr.setRequestHeader("Passport", oldPassport);
+  xhr.send(body);
+}
+
+// Отмена редактирования
+const cancelEdit = () => {
+  selectRow.classList.remove("-edit");
+  deleteButton("save");
+  deleteButton("cancel");
+  allInput.forEach(item => { item.style.backgroundColor = "#ffffff" });
+}

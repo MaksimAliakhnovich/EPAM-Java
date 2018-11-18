@@ -39,4 +39,8 @@ public class EnrolleeService {
     public void deleteEnrolleeByPassport(String passport) {
         enrolleeDAO.delete(passport);
     }
+
+    public void updateEnrollee(String firstName, String lastName, int certificateScore, String passport, String oldPassport) {
+        enrolleeDAO.update(firstName, lastName, certificateScore, passport, oldPassport);
+    }
 }

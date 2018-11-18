@@ -9,6 +9,7 @@ public interface EnrolleeDAO {
     Enrollee getById(Long id);
     int add(String firstName, String lastName, int score, String passport);
     int delete(String passport);
+    int update(String firstName, String lastName, int score, String passport, String oldPassport);
     Enrollee getByPassport(String passport);
 }
 

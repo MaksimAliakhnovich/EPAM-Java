@@ -46,6 +46,11 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
     }
 
     @Override
+    public int update(String firstName, String lastName, int score, String passport, String oldPassport) {
+        return 0;
+    }
+
+    @Override
     public Enrollee getByPassport(String passport) {
         return null;
     }

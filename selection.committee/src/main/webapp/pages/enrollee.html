@@ -23,14 +23,24 @@
       <form action="" method="post">
         <fieldset>
           <legend>Action panel</legend>
-          <input type="text" name="first-name">
-          <input type="text" name="last-name">
-          <input type="text" name="score">
-          <input type="text" name="passport">
-          <button class="button find" type="submit">Find</button>
-          <button class="button add" type="submit">Add</button>
-          <button class="button edit" type="submit">Edit</button>
-          <button class="button delete" type="submit">Delete</button>
+          <div>
+            <label for="first-name">First Name</label>
+            <input type="text" name="first-name">
+            <label for="last-name">Last Name</label>
+            <input type="text" name="last-name">
+          </div>
+          <div>
+            <label for="score">Certificate score</label>
+            <input type="text" name="score">
+            <label for="passport">Passport</label>
+            <input type="text" name="passport">
+          </div>
+          <div class="button-panel">
+            <button class="button find">Find</button>
+            <button class="button add">Add</button>
+            <button class="button delete">Delete</button>
+            <button class="button edit">Edit</button>
+          </div>
         </fieldset>
       </form>
     </section>

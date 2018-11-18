@@ -1,6 +1,5 @@
 package edu.epam.selectioncommittee.servlets;
 
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.epam.selectioncommittee.dao.factories.DAOFactory;
 import edu.epam.selectioncommittee.dao.factories.MySqlDAOFactory;
@@ -10,7 +9,6 @@ import edu.epam.selectioncommittee.service.EnrolleeService;
 import edu.epam.selectioncommittee.utils.ConfigurationManager;
 import edu.epam.selectioncommittee.utils.DBConnectionPool;
 
-import javax.lang.model.type.ReferenceType;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +28,7 @@ public class EnrolleeServlet extends HttpServlet {
         resp.setContentType("application/json;charset=UTF-8");
         ObjectMapper mapper = new ObjectMapper();
         String requestBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        if(req.getHeader("type").equals("add")) {
+        if (req.getHeader("type").equals("add")) {
             Enrollee enrollee = mapper.readValue(requestBody, Enrollee.class);
             enrolleeService.addEnrollee(enrollee.getFirstName(), enrollee.getLastName(), enrollee.getCertificateScore(), enrollee.getPassport());
             resp.getWriter().write(mapper.writeValueAsString(enrolleeService.getAllEnrollee()));
@@ -58,6 +56,17 @@ public class EnrolleeServlet extends HttpServlet {
         String requestBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         String passport = mapper.readTree(requestBody).get("passport").asText();
         enrolleeService.deleteEnrolleeByPassport(passport);
+        resp.getWriter().write(mapper.writeValueAsString(enrolleeService.getAllEnrollee()));
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json;charset=UTF-8");
+        ObjectMapper mapper = new ObjectMapper();
+        String oldLinePassport = req.getHeader("Passport");
+        String requestBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        Enrollee enrollee = mapper.readValue(requestBody, Enrollee.class);
+        enrolleeService.updateEnrollee(enrollee.getFirstName(), enrollee.getLastName(), enrollee.getCertificateScore(), enrollee.getPassport(), oldLinePassport);
         resp.getWriter().write(mapper.writeValueAsString(enrolleeService.getAllEnrollee()));
     }
 

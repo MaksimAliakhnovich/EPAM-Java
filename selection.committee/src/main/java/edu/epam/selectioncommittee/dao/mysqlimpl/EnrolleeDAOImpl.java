@@ -27,6 +27,8 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
             ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeGetByPassport");
     private final static String SQL_DELETE_BY_PASSPORT =
             ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeDeleteByPassport");
+    private final static String SQL_UPDATE =
+            ConfigurationManager.INSTANCE.getInstance().getProperty("enrolleeUpdate");
     private PreparedStatement prepStat = null;
     private ResultSet resSet = null;
     private Connection conn = null;
@@ -107,6 +109,27 @@ public class EnrolleeDAOImpl implements EnrolleeDAO {
             conn = dbConnectionPool.getPoolConnection();
             prepStat = conn.prepareStatement(SQL_DELETE_BY_PASSPORT);
             prepStat.setString(1, passport);
+            count = prepStat.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CloseConnection.closeConnection(resSet, prepStat);
+            dbConnectionPool.putPoolConnection(conn);
+        }
+        return count;
+    }
+
+    @Override
+    public int update(String firstName, String lastName, int score, String passport, String oldPassport) {
+        int count = 0;
+        try {
+            conn = dbConnectionPool.getPoolConnection();
+            prepStat = conn.prepareStatement(SQL_UPDATE);
+            prepStat.setString(1, firstName);
+            prepStat.setString(2, lastName);
+            prepStat.setInt(3, score);
+            prepStat.setString(4, passport);
+            prepStat.setString(5, oldPassport);
             count = prepStat.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -24,3 +24,7 @@ body {
 .-select {
   background-color: #b4e9b7;
 }
+
+.-select.-edit {
+  background-color: #dbc547;
+}

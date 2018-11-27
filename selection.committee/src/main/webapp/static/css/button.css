@@ -16,7 +16,7 @@
 .button {
   width: 120px;
   height: 50px;
-  margin: 10px;
+  /* margin: 10px; */
   background-color: #4CAF50;
   border: none;
   color: white;

@@ -1,8 +1,12 @@
 @import "button.css";
 
+body {
+  margin: 0;
+}
+
 .main {
   max-width: 430px;
-  margin: 50vh auto;
+  margin: 0 auto;
 }
 
 form {

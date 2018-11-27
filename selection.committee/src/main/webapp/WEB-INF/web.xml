@@ -4,10 +4,15 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <!--<servlet>-->
-        <!--<servlet-name>Login</servlet-name>-->
-        <!--<servlet-class>edu.epam.selectioncommittee.servlets.Login</servlet-class>-->
-    <!--</servlet>-->
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>edu.epam.selectioncommittee.servlets.LoginFilter</filter-class>
+    </filter>
+
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>edu.epam.selectioncommittee.servlets.Login</servlet-class>
+    </servlet>
 
     <!--<servlet>-->
         <!--<servlet-name>Register</servlet-name>-->
@@ -24,15 +29,20 @@
         <servlet-class>edu.epam.selectioncommittee.servlets.FacultyServlet</servlet-class>
      </servlet>
 
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>Login</servlet-name>-->
-        <!--<url-pattern>/login</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
 
     <!--<servlet-mapping>-->
         <!--<servlet-name>Register</servlet-name>-->
         <!--<url-pattern>/register</url-pattern>-->
     <!--</servlet-mapping>-->
+
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <servlet-mapping>
         <servlet-name>Enrollee</servlet-name>
@@ -46,18 +56,18 @@
 
     <error-page>
         <error-code>404</error-code>
-        <location>/pages/page_not_found.html</location>
+        <location>/page_not_found.html</location>
     </error-page>
 
     <error-page>
         <exception-type>
             java.lang.Throwable
         </exception-type>
-        <location>/pages/error.html</location>
+        <location>/error.html</location>
     </error-page>
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>/login.html</welcome-file>
     </welcome-file-list>
 
 </web-app>

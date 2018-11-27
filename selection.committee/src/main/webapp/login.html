@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Авторизация</title>
+  <link rel="stylesheet" href="static/css/login.css">
+</head>
+
+<body>
+
+  <section class="container">
+    <div class="login">
+      <h1>Войти в базу</h1>
+      <div class="invalid-user-name">
+        Invalid username and password.
+      </div>
+      <div class="logout">
+        You have been logged out.
+      </div>
+      <form action="login" method="post">
+        <p><input type="text" name="username" value="" placeholder="Логин или Email" required></p>
+        <p><input type="password" name="password" value="" placeholder="Пароль" required></p>
+        <p class="submit"><input type="submit" name="commit" value="Войти"></p>
+      </form>
+    </div>
+  </section>
+
+</body>
+
+</html>

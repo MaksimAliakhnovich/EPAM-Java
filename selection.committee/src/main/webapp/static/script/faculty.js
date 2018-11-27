@@ -1,5 +1,4 @@
 const xhr = new XMLHttpRequest();
-// const body = '{ "table": "faculty" }';
 let data = {};
 xhr.onreadystatechange = function () {
   if (xhr.readyState == 4 && xhr.status == 200) {
@@ -10,7 +9,6 @@ xhr.onreadystatechange = function () {
 };
 xhr.open("GET", '/faculty', true);
 xhr.setRequestHeader('Accept', 'application/json;charset=UTF-8');
-// xhr.send(body);
 xhr.send();
 
 const createTable = () => {

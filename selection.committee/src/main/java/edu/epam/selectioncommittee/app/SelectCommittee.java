@@ -53,16 +53,16 @@ public class SelectCommittee {
 
         // вводим номер факультета и баллы по предметам факультета, записываем в БД
         System.out.println(manager.getInstance().getString("registerEnrolle"));
-        logicService.getSubScore(1L, 10, 20, 30);
-        logicService.addRegLine();
+//        logicService.getSubScore(1L, 10, 20, 30);
+//        logicService.addRegLine();
 
 //        logicService.addEnrollee("Сергей", "Сергеевич", 20, "HB0000002");
-        logicService.getSubScore(1L, 40, 50, 60);
-        logicService.addRegLine();
+//        logicService.getSubScore(1L, 40, 50, 60);
+//        logicService.addRegLine();
 
 //        logicService.addEnrollee("Кирилл", "Денисович", 30, "HB0000003");
-        logicService.getSubScore(1L, 70, 80, 90);
-        logicService.addRegLine();
+//        logicService.getSubScore(1L, 70, 80, 90);
+//        logicService.addRegLine();
 
         // вводим номер факультета, получаем список абитуриентов с максимальными баллами по факультету.
         // кол-во студентов ограничено планом набора из БД

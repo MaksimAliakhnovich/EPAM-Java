@@ -1,0 +1,22 @@
+@import "table.css";
+@import "button.css";
+
+body {
+  margin: 0;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+.nav {
+  max-width: 430px;
+  margin: auto;
+}
+
+.main {
+  margin-top: 70px;
+}

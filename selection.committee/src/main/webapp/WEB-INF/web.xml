@@ -14,10 +14,10 @@
         <servlet-class>edu.epam.selectioncommittee.servlets.Login</servlet-class>
     </servlet>
 
-    <!--<servlet>-->
-        <!--<servlet-name>Register</servlet-name>-->
-        <!--<servlet-class>edu.epam.selectioncommittee.servlets.Register</servlet-class>-->
-    <!--</servlet>-->
+    <servlet>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>edu.epam.selectioncommittee.servlets.RegisterServlet</servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>Enrollee</servlet-name>
@@ -34,10 +34,10 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>Register</servlet-name>-->
-        <!--<url-pattern>/register</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
 
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>

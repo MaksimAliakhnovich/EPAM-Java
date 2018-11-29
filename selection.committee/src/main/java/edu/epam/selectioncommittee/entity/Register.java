@@ -5,14 +5,17 @@ package edu.epam.selectioncommittee.entity;
  */
 public class Register {
     private Long id;
-    private Long enrolleeId;
+    private String enrolleePassport;
     private Long subjectId;
     private Integer score;
     private Long facultyId;
 
-    public Register(Long id, Long enrolleeId, Long subjectId, Integer score, Long facultyId) {
+    public Register() {
+    }
+
+    public Register(Long id, String enrolleePassport, Long subjectId, Integer score, Long facultyId) {
         this.id = id;
-        this.enrolleeId = enrolleeId;
+        this.enrolleePassport = enrolleePassport;
         this.subjectId = subjectId;
         this.score = score;
         this.facultyId = facultyId;
@@ -26,12 +29,12 @@ public class Register {
         this.id = id;
     }
 
-    public Long getEnrolleeId() {
-        return enrolleeId;
+    public String getEnrolleePassport() {
+        return enrolleePassport;
     }
 
-    public void setEnrolleeId(Long enrolleeId) {
-        this.enrolleeId = enrolleeId;
+    public void setEnrolleePassport(String enrolleePassport) {
+        this.enrolleePassport = enrolleePassport;
     }
 
     public Long getSubjectId() {
@@ -60,6 +63,6 @@ public class Register {
 
     @Override
     public String toString() {
-        return id + " " + enrolleeId + " " + subjectId + " " + score + " " + facultyId;
+        return id + " " + enrolleePassport + " " + subjectId + " " + score + " " + facultyId;
     }
 }
